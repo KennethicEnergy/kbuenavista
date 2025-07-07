@@ -3,20 +3,34 @@
   top: 0;
   left: 0;
   z-index: 999;
-  background: #000;
-  opacity: 0.8;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(4px);
   height: 100%;
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
+  animation: loaderFadeIn var(--transition-normal) var(--ease-out);
 
+  @keyframes loaderFadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
 
   svg {
-    animation-name: spin;
-    animation-duration: 3s;
-    animation-iteration-count: infinite;
-    animation-timing-function: linear;
+    animation: spin var(--transition-slower) linear infinite;
+    color: #007bff;
+    filter: drop-shadow(0 0 8px rgba(0, 123, 255, 0.5));
+    transition: all var(--transition-normal) var(--ease-out);
+
+    &:hover {
+      filter: drop-shadow(0 0 12px rgba(0, 123, 255, 0.8));
+      transform: scale(1.1);
+    }
   }
 
   @keyframes spin {

@@ -8,6 +8,19 @@ body {
 :root {
   --background-color: #171717;
   --text-color: #ececec;
+
+  /* Animation timing variables for consistency */
+  --transition-fast: 0.15s;
+  --transition-normal: 0.25s;
+  --transition-slow: 0.4s;
+  --transition-slower: 0.6s;
+
+  /* Easing functions for smoother animations */
+  --ease-out: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --ease-in: cubic-bezier(0.55, 0.055, 0.675, 0.19);
+  --ease-in-out: cubic-bezier(0.645, 0.045, 0.355, 1);
+  --ease-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  --ease-spring: cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 /* Dark Theme */
@@ -27,7 +40,8 @@ body {
   -moz-osx-font-smoothing: grayscale;
   background-color: var(--background-color);
   color: var(--text-color);
-  transition: background-color 0.3s ease, color 0.3s ease;
+  transition: background-color var(--transition-slow) var(--ease-in-out),
+              color var(--transition-slow) var(--ease-in-out);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -41,9 +55,27 @@ body {
   margin: 0;
 }
 
+/* Global smooth transitions for interactive elements */
+a, button, [role="button"], input, textarea, select {
+  transition: all var(--transition-normal) var(--ease-out);
+}
+
+/* Improved link hover effects */
 a {
   color: inherit;
   text-decoration: none;
+  position: relative;
+}
+
+a:hover {
+  transform: translateY(-1px);
+}
+
+/* Smooth focus states */
+a:focus, button:focus, input:focus, textarea:focus, select:focus {
+  outline: 2px solid #007bff;
+  outline-offset: 2px;
+  transition: outline var(--transition-fast) var(--ease-out);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -54,4 +86,20 @@ a {
 
 h1, h2, h3, h4, h5, h6 {
   margin: unset; /* override */
+}
+
+/* Smooth scrolling for better UX */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Improved selection styling */
+::selection {
+  background-color: rgba(0, 123, 255, 0.3);
+  color: inherit;
+}
+
+::-moz-selection {
+  background-color: rgba(0, 123, 255, 0.3);
+  color: inherit;
 }

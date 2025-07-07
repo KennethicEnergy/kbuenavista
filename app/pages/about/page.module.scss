@@ -2,11 +2,37 @@
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+  animation: pageSlideIn var(--transition-slow) var(--ease-out);
+
+  @keyframes pageSlideIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
 
   h1 {
     display: flex;
     align-items: center;
     cursor: pointer;
+    transition: all var(--transition-normal) var(--ease-out);
+    border-radius: 4px;
+    padding: 4px;
+
+    &:hover {
+      transform: translateY(-1px);
+      background-color: rgba(255, 255, 255, 0.1);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    &:active {
+      transform: translateY(0) scale(0.95);
+      transition: transform var(--transition-fast) var(--ease-out);
+    }
   }
 
   .avatar {
@@ -21,9 +47,23 @@
     width: 100%;
     max-width: 580px;
     aspect-ratio: 16 / 9;
+    transition: all var(--transition-normal) var(--ease-out);
+    transform: translateZ(0);
+
+    &:hover {
+      transform: translateY(-4px) translateZ(0);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+      border-color: #666;
+    }
 
     img {
       object-fit: contain;
+      transition: all var(--transition-slow) var(--ease-out);
+      transform: scale(1);
+    }
+
+    &:hover img {
+      transform: scale(1.05);
     }
   }
 }

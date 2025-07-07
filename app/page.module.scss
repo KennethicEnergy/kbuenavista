@@ -4,6 +4,7 @@
   justify-content: center;
   margin: 4rem 0;
   overflow: auto;
+  transition: all var(--transition-normal) var(--ease-out);
 
   .main {
     display: flex;
@@ -11,5 +12,18 @@
     width: 600px;
     min-width: 400px;
     gap: 2rem;
+    animation: pageSlideIn var(--transition-slow) var(--ease-out);
+    transition: all var(--transition-normal) var(--ease-out);
+
+    @keyframes pageSlideIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
   }
 }
