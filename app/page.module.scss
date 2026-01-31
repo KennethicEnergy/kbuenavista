@@ -15,6 +15,10 @@
     animation: pageSlideIn var(--transition-slow) var(--ease-out);
     transition: all var(--transition-normal) var(--ease-out);
 
+    @media (max-width: 768px) {
+      margin: 0.8rem;
+    }
+
     @keyframes pageSlideIn {
       from {
         opacity: 0;
