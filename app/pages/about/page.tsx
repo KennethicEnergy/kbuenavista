@@ -8,13 +8,11 @@ import AboutSlideshow from '@/app/components/about-slideshow/about-slideshow';
 import { aboutSlideshowImages } from '@/app/constants/constants';
 
 const Page = () => {
-  const { setIsPageLoading, setAlert, setIsAlertOpen } = useAppStore();
+  const { setIsPageLoading } = useAppStore();
 
   useEffect(() => {
     setIsPageLoading(false);
-    setAlert("warning", "This feature is currently on development.");
-    setIsAlertOpen(true);
-  }, [setIsPageLoading, setAlert, setIsAlertOpen]);
+  }, [setIsPageLoading]);
 
   return (
     <div className={styles.about}>

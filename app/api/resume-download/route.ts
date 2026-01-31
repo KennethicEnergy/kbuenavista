@@ -29,21 +29,24 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    try {
-      const resend = new Resend(apiKey);
-      await resend.emails.send({
-        from: process.env.RESEND_FROM_EMAIL || "Portfolio <onboarding@resend.dev>",
-        to: notifyEmail,
-        subject: `Resume Downloaded: ${displayName}`,
-        html: `
-          <h2>Someone downloaded your resume</h2>
-          <p><strong>Name:</strong> ${displayName}</p>
-          <p><strong>Email:</strong> ${email}</p>
-          <p><strong>Time:</strong> ${new Date().toISOString()}</p>
-        `,
-      });
-    } catch (emailError) {
-      console.error("Failed to send notification email:", emailError);
+    const fromEmail = process.env.RESEND_FROM_EMAIL || "Portfolio <onboarding@resend.dev>";
+    const resend = new Resend(apiKey);
+    const { data, error } = await resend.emails.send({
+      from: fromEmail,
+      to: notifyEmail,
+      subject: `Resume Downloaded: ${displayName}`,
+      html: `
+        <h2>Someone downloaded your resume</h2>
+        <p><strong>Name:</strong> ${displayName}</p>
+        <p><strong>Email:</strong> ${email}</p>
+        <p><strong>Time:</strong> ${new Date().toISOString()}</p>
+      `,
+    });
+
+    if (error) {
+      console.error("Resend failed to send notification email:", error.message || error);
+    } else if (data?.id) {
+      console.log("Resend notification sent:", data.id);
     }
 
     return NextResponse.json({ url: RESUME_PDF_URL });
