@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { IoIosClose } from "react-icons/io";
 import { FcGoogle } from "react-icons/fc";
 import styles from "./login-modal.module.scss";
-import { useAuth } from "@/app/providers/auth-provider";
+// import { useAuth } from "@/app/providers/auth-provider";
 import { getFirebaseAuth } from "@/lib/firebase";
 
 type LoginModalProps = {
@@ -22,21 +22,21 @@ export default function LoginModal({
   authConfigured = true,
   onDownloadWithoutSignIn,
 }: LoginModalProps) {
-  const { signInWithEmail, signUpWithEmail } = useAuth();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [isSignUp, setIsSignUp] = useState(false);
+  // const { signInWithEmail, signUpWithEmail } = useAuth();
+  // const [email, setEmail] = useState("");
+  // const [password, setPassword] = useState("");
+  // const [isSignUp, setIsSignUp] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const resetForm = () => {
-    setEmail("");
-    setPassword("");
-    setError("");
-  };
+  // const resetForm = () => {
+  //   setEmail("");
+  //   setPassword("");
+  //   setError("");
+  // };
 
   const handleClose = () => {
-    resetForm();
+    // resetForm();
     onClose();
   };
 
@@ -58,27 +58,27 @@ export default function LoginModal({
     }
   };
 
-  const handleEmailSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError("");
-    setLoading(true);
-    try {
-      if (isSignUp) {
-        await signUpWithEmail(email, password);
-      } else {
-        await signInWithEmail(email, password);
-      }
-      const auth = getFirebaseAuth();
-      const user = auth?.currentUser;
-      const token = user ? await user.getIdToken() : "";
-      handleClose();
-      if (token) onSuccess?.(token);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Authentication failed");
-    } finally {
-      setLoading(false);
-    }
-  };
+  // const handleEmailSubmit = async (e: React.FormEvent) => {
+  //   e.preventDefault();
+  //   setError("");
+  //   setLoading(true);
+  //   try {
+  //     if (isSignUp) {
+  //       await signUpWithEmail(email, password);
+  //     } else {
+  //       await signInWithEmail(email, password);
+  //     }
+  //     const auth = getFirebaseAuth();
+  //     const user = auth?.currentUser;
+  //     const token = user ? await user.getIdToken() : "";
+  //     handleClose();
+  //     if (token) onSuccess?.(token);
+  //   } catch (err) {
+  //     setError(err instanceof Error ? err.message : "Authentication failed");
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
 
   if (!isOpen) return null;
 
@@ -130,7 +130,7 @@ export default function LoginModal({
           <span>or</span>
         </div>
 
-        <form onSubmit={handleEmailSubmit} className={styles.form}>
+        {/* <form onSubmit={handleEmailSubmit} className={styles.form}>
           <input
             type="email"
             placeholder="Email"
@@ -152,9 +152,9 @@ export default function LoginModal({
           <button type="submit" className={styles.submitButton} disabled={loading}>
             {loading ? "Please wait..." : isSignUp ? "Create account" : "Sign in"}
           </button>
-        </form>
+        </form> */}
 
-        <button
+        {/* <button
           type="button"
           className={styles.toggleMode}
           onClick={() => {
@@ -163,7 +163,7 @@ export default function LoginModal({
           }}
         >
           {isSignUp ? "Already have an account? Sign in" : "Need an account? Sign up"}
-        </button>
+        </button> */}
           </>
         )}
       </div>
