@@ -18,6 +18,7 @@ export async function POST(request: NextRequest) {
     const email = decodedToken.email;
     const displayName = decodedToken.name || email || "Unknown";
 
+    // Send you a notification email via Resend (who downloaded, when), then return download URL
     const apiKey = process.env.RESEND_API_KEY;
     const notifyEmail = process.env.RESUME_DOWNLOAD_NOTIFY_EMAIL || process.env.RESEND_FROM_EMAIL;
 
