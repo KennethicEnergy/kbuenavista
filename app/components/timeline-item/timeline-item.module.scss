@@ -9,7 +9,7 @@
     margin-bottom: 0;
   }
 
-  &:hover {
+  &:hover .content {
     transform: translateX(4px);
   }
 
@@ -44,6 +44,7 @@
   border: 2px solid #fff;
   box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
   z-index: 2;
+  flex-shrink: 0;
   transition: all var(--transition-normal) var(--ease-out);
 
   &:last-child {

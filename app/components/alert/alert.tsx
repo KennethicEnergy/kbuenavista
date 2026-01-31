@@ -23,8 +23,14 @@ const Alert = () => {
   return (
     <>
       {isAlertOpen && <div className={styles.alert} style={{backgroundColor: `${background}`}}>
-        <p>{alertMessage}</p>
-        {isAlertOpen && isAlertDismissable && <p onClick={() => resetAlert()}><IoIosClose /></p>}
+        <div className={styles.alertContent}>
+          <p className={styles.alertMessage}>{alertMessage}</p>
+          {isAlertDismissable && (
+            <button type="button" className={styles.closeButton} onClick={() => resetAlert()} aria-label="Close">
+              <IoIosClose size={24} />
+            </button>
+          )}
+        </div>
       </div>}
     </>
   )

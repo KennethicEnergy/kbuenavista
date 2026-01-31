@@ -6,9 +6,6 @@
   top: 24px;
   right: 24px;
   padding: 20px;
-  gap: 0.2rem;
-  display: flex;
-  flex-direction: column;
   z-index: 3;
   animation: alertSlideIn var(--transition-slow) var(--ease-out),
              alertFadeOut 15s var(--ease-in-out) forwards;
@@ -38,27 +35,40 @@
       transform: translateX(100%) translateZ(0);
     }
   }
+}
 
-  .top {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+.alertContent {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+}
 
-    p {
-      cursor: pointer;
-      transition: all var(--transition-normal) var(--ease-out);
-      border-radius: 4px;
-      padding: 4px;
+.alertMessage {
+  flex: 1;
+  margin: 0;
+  min-width: 0;
+}
 
-      &:hover {
-        transform: scale(1.1);
-        background-color: rgba(255, 255, 255, 0.1);
-      }
+.closeButton {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  padding: 4px;
+  cursor: pointer;
+  color: inherit;
+  border-radius: 4px;
+  transition: all var(--transition-normal) var(--ease-out);
 
-      &:active {
-        transform: scale(0.95);
-        transition: transform var(--transition-fast) var(--ease-out);
-      }
-    }
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+  }
+
+  &:active {
+    transform: scale(0.95);
   }
 }
