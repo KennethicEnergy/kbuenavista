@@ -93,4 +93,20 @@ RESUME_DOWNLOAD_NOTIFY_EMAIL=
 In Firebase Console → Authentication → Settings → Authorized domains, add:
 
 - `localhost` (for local dev)
-- Your production domain (e.g. `knvzta.com`)
+- Your production domain (e.g. `your-app.vercel.app` or custom domain)
+
+---
+
+## 5. Login then download – checklist (Vercel)
+
+For **“Sign in → then download resume”** to work in production, **all** of the following must be true. If one is wrong, you get “Could not download resume” or the login form doesn’t show.
+
+| # | What to check | Where |
+|---|----------------|--------|
+| 1 | **Same Firebase project** | Client config (NEXT_PUBLIC_FIREBASE_*) and **FIREBASE_SERVICE_ACCOUNT_KEY** must be from the **same** Firebase project. Check `project_id` in the service account JSON and compare with `NEXT_PUBLIC_FIREBASE_PROJECT_ID`. |
+| 2 | **Client env vars on Vercel** | In your project → Settings → Environment Variables, add all 6: `NEXT_PUBLIC_FIREBASE_API_KEY`, `NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN`, `NEXT_PUBLIC_FIREBASE_PROJECT_ID`, `NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET`, `NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID`, `NEXT_PUBLIC_FIREBASE_APP_ID`. |
+| 3 | **Service account on Vercel** | Add `FIREBASE_SERVICE_ACCOUNT_KEY` with the **full** service account JSON (same project as step 1), as **one line**. |
+| 4 | **Authorized domain** | Firebase Console → Authentication → Authorized domains includes your Vercel URL (e.g. `kbuenavista.vercel.app`). |
+| 5 | **Redeploy** | After changing env vars, trigger a new deployment so the new values are used. |
+
+If it still fails, open Vercel → your project → **Logs** (or **Functions** → resume-download) and check the “Resume download error: …” line for the exact cause (e.g. wrong project, invalid JSON).

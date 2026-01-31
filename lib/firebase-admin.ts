@@ -8,10 +8,19 @@ function getFirebaseAdmin() {
 
   const serviceAccount = process.env.FIREBASE_SERVICE_ACCOUNT_KEY;
   if (!serviceAccount) {
-    throw new Error("Missing FIREBASE_SERVICE_ACCOUNT_KEY. Add it to .env.local");
+    throw new Error(
+      "Missing FIREBASE_SERVICE_ACCOUNT_KEY. Add in Vercel or .env.local."
+    );
   }
 
-  const parsed = JSON.parse(serviceAccount) as ServiceAccount;
+  let parsed: ServiceAccount;
+  try {
+    parsed = JSON.parse(serviceAccount) as ServiceAccount;
+  } catch {
+    throw new Error(
+      "FIREBASE_SERVICE_ACCOUNT_KEY is invalid JSON. In Vercel, paste the full key as one line."
+    );
+  }
   initializeApp({ credential: cert(parsed) });
   return getAuth();
 }
