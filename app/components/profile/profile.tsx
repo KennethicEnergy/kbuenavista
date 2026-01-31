@@ -14,6 +14,7 @@ const Profile = () => {
   const { setIsPageLoading, isPageLoading } = useAppStore();
   const { user, getIdToken } = useAuth();
   const [showLoginModal, setShowLoginModal] = useState(false);
+  const [authConfigured, setAuthConfigured] = useState(true);
 
   const performDownload = async (token: string) => {
     const res = await fetch("/api/resume-download", {
@@ -31,23 +32,21 @@ const Profile = () => {
     document.body.removeChild(link);
   };
 
+  const openResumePdf = () => {
+    const url = `https://docs.google.com/document/d/${googleDocId}/export?format=pdf`;
+    const link = document.createElement("a");
+    link.href = url;
+    link.target = "_blank";
+    link.rel = "noopener noreferrer";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   const handleDownload = async () => {
-    const auth = await import("@/lib/firebase").then((m) => m.getFirebaseAuth());
-    const authConfigured = !!auth;
-
-    if (!authConfigured) {
-      const url = `https://docs.google.com/document/d/${googleDocId}/export?format=pdf`;
-      const link = document.createElement("a");
-      link.href = url;
-      link.target = "_blank";
-      link.rel = "noopener noreferrer";
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      return;
-    }
-
     if (!user) {
+      const auth = await import("@/lib/firebase").then((m) => m.getFirebaseAuth());
+      setAuthConfigured(!!auth);
       setShowLoginModal(true);
       return;
     }
@@ -82,6 +81,11 @@ const Profile = () => {
         isOpen={showLoginModal}
         onClose={() => setShowLoginModal(false)}
         onSuccess={handleLoginSuccess}
+        authConfigured={authConfigured}
+        onDownloadWithoutSignIn={() => {
+          setShowLoginModal(false);
+          openResumePdf();
+        }}
       />
       <div className={styles.profile}>
       <div className={styles.nameRow}>

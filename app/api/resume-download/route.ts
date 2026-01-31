@@ -47,7 +47,12 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({ url: RESUME_PDF_URL });
   } catch (error) {
-    console.error("Resume download error:", error);
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    const message = error instanceof Error ? error.message : "Unknown error";
+    const code = error && typeof error === "object" && "code" in error ? (error as { code: string }).code : "";
+    console.error("Resume download error:", code || message, error);
+    return NextResponse.json(
+      { error: "Unauthorized", details: process.env.NODE_ENV === "development" ? message : undefined },
+      { status: 401 }
+    );
   }
 }
