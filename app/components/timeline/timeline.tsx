@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import TimelineItem from "../timeline-item/timeline-item";
 import styles from "./timeline.module.scss";
 import { timelineData } from "@/app/constants/data";
@@ -16,6 +16,12 @@ const Timeline: React.FC = () => {
   const handleExpand = () => {
     setIsExpanded((prev) => !prev);
   };
+
+  useEffect(() => {
+    if (window.innerWidth >= 768) {
+      setIsExpanded(true);
+    }
+  }, []);
 
   return (
     <div className={styles.timeline} data-theme={theme}>

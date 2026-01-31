@@ -51,7 +51,7 @@ For Vercel: paste the full JSON as the env var value.
 
 1. Sign up at [Resend](https://resend.com) (free tier: 100 emails/day)
 2. Create an API key at [Resend API Keys](https://resend.com/api-keys)
-3. Verify your domain (or use `onboarding@resend.dev` for testing)
+3. **Important:** If you use `onboarding@resend.dev` as the sender, Resend only allows sending **to the email address of your Resend account**. So set `RESUME_DOWNLOAD_NOTIFY_EMAIL` to that same email. To send to any address (e.g. a different Gmail), add and verify your own domain at [Resend Domains](https://resend.com/domains), then set `RESEND_FROM_EMAIL` to an address on that domain (e.g. `Portfolio <notify@yourdomain.com>`).
 
 Add to `.env.local`:
 
@@ -61,8 +61,8 @@ RESEND_FROM_EMAIL=Portfolio <onboarding@resend.dev>
 RESUME_DOWNLOAD_NOTIFY_EMAIL=your-email@example.com
 ```
 
-- `RESEND_FROM_EMAIL`: Sender address (use your verified domain in production)
-- `RESUME_DOWNLOAD_NOTIFY_EMAIL`: Where to receive download notifications (your email)
+- `RESEND_FROM_EMAIL`: Sender address. With `onboarding@resend.dev`, you can only send to your Resend account email. Use a verified domain to send to any recipient.
+- `RESUME_DOWNLOAD_NOTIFY_EMAIL`: Where to receive download notifications. Must be your Resend account email if using `onboarding@resend.dev`.
 
 ---
 
