@@ -126,9 +126,9 @@ export default function LoginModal({
           Continue with Google
         </button>
 
-        <div className={styles.divider}>
+        {/* <div className={styles.divider}>
           <span>or</span>
-        </div>
+        </div> */}
 
         {/* <form onSubmit={handleEmailSubmit} className={styles.form}>
           <input

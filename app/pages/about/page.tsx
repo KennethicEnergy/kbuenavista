@@ -1,19 +1,14 @@
 "use client"
 import React, { useEffect } from 'react';
+import Link from 'next/link';
 import styles from './page.module.scss';
-import Image from 'next/image';
 import { useAppStore } from '@/app/store/app-store';
 import { IoIosArrowRoundBack } from 'react-icons/io';
-import { useRouter } from 'next/navigation';
+import AboutSlideshow from '@/app/components/about-slideshow/about-slideshow';
+import { aboutSlideshowImages } from '@/app/constants/constants';
 
 const Page = () => {
   const { setIsPageLoading, setAlert, setIsAlertOpen } = useAppStore();
-  const router = useRouter();
-
-  const goBack = () => {
-    router.push("/");
-    setIsPageLoading(true);
-  };
 
   useEffect(() => {
     setIsPageLoading(false);
@@ -23,9 +18,15 @@ const Page = () => {
 
   return (
     <div className={styles.about}>
-      <h1><IoIosArrowRoundBack onClick={goBack}/>About</h1>
+      <Link href="/" onClick={() => setIsPageLoading(true)}>
+        <h1>
+          <IoIosArrowRoundBack />
+          About
+        </h1>
+      </Link>
+
       <div className={styles.avatar}>
-        <Image src="/images/fallback-img.jpg" alt="avatar" fill quality={100} priority/>
+        <AboutSlideshow images={aboutSlideshowImages} />
       </div>
       <p>
         I’m a Frontend Developer with nearly a decade of experience building production-ready web applications that are fast, maintainable, and actually pleasant to use. I specialize in turning complex requirements into clean, scalable UI architectures while keeping performance, accessibility, and developer experience in mind.
