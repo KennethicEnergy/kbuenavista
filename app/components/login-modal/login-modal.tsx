@@ -11,9 +11,17 @@ type LoginModalProps = {
   isOpen: boolean;
   onClose: () => void;
   onSuccess?: (idToken: string) => void;
+  authConfigured?: boolean;
+  onDownloadWithoutSignIn?: () => void;
 };
 
-export default function LoginModal({ isOpen, onClose, onSuccess }: LoginModalProps) {
+export default function LoginModal({
+  isOpen,
+  onClose,
+  onSuccess,
+  authConfigured = true,
+  onDownloadWithoutSignIn,
+}: LoginModalProps) {
   const { signInWithEmail, signUpWithEmail } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -88,11 +96,26 @@ export default function LoginModal({ isOpen, onClose, onSuccess }: LoginModalPro
 
         <h2 className={styles.title}>Sign in to download resume</h2>
         <p className={styles.subtitle}>
-          Your email will be shared so we can stay in touch.
+          {authConfigured
+            ? "Your email will be shared so we can stay in touch."
+            : "Sign-in is not configured for this deployment."}
         </p>
 
         {error && <p className={styles.error}>{error}</p>}
 
+        {!authConfigured && onDownloadWithoutSignIn ? (
+          <button
+            type="button"
+            className={styles.submitButton}
+            onClick={() => {
+              onClose();
+              onDownloadWithoutSignIn();
+            }}
+          >
+            Download resume
+          </button>
+        ) : (
+          <>
         <button
           type="button"
           className={styles.googleButton}
@@ -141,6 +164,8 @@ export default function LoginModal({ isOpen, onClose, onSuccess }: LoginModalPro
         >
           {isSignUp ? "Already have an account? Sign in" : "Need an account? Sign up"}
         </button>
+          </>
+        )}
       </div>
     </div>
   );
