@@ -1,16 +1,15 @@
 import React, { useState } from 'react';
+import Link from 'next/link';
 import styles from './profile.module.scss';
 import { country, fullName, githubUrl, googleDocId, introduction, linkedinUrl } from "@/app/constants/constants";
 import { BiLogoGithub } from "react-icons/bi";
 import { IoLogoLinkedin } from "react-icons/io";
 import { MdFileDownload } from 'react-icons/md';
-import { useRouter } from 'next/navigation';
 import { useAppStore } from '@/app/store/app-store';
 import { useAuth } from '@/app/providers/auth-provider';
 import LoginModal from '@/app/components/login-modal/login-modal';
 
 const Profile = () => {
-  const router = useRouter();
   const { setIsPageLoading, isPageLoading } = useAppStore();
   const { user, getIdToken } = useAuth();
   const [showLoginModal, setShowLoginModal] = useState(false);
@@ -68,11 +67,6 @@ const Profile = () => {
     });
   };
 
-  const navigateToAbout = () => {
-    router.push("pages/about");
-    setIsPageLoading(true);
-  };
-
   if (isPageLoading) return null;
 
   return (
@@ -89,10 +83,10 @@ const Profile = () => {
       />
       <div className={styles.profile}>
       <div className={styles.nameRow}>
-        <h1 className={styles.name} onClick={navigateToAbout}
-        // data-theme={theme}
-        >
-          {fullName}
+        <h1 className={styles.name}>
+          <Link href="/pages/about" onClick={() => setIsPageLoading(true)}>
+            {fullName}
+          </Link>
         </h1>
         <div className={styles.socials}>
           <span onClick={handleDownload}><MdFileDownload size={20}/></span>
