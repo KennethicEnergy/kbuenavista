@@ -11,7 +11,7 @@
   "dependencies": {
     "firebase": "^12.8.0",
     "firebase-admin": "^13.6.0",
-    "next": "15.0.4",
+    "next": "15.0.8",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-fast-marquee": "^1.6.5",
@@ -24,7 +24,7 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^8",
-    "eslint-config-next": "15.0.4",
+    "eslint-config-next": "15.0.8",
     "sass": "^1.83.1",
     "typescript": "^5"
   },

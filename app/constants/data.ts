@@ -124,7 +124,7 @@ Delivers proposals and guides customers through the application process without 
 		title: "Senior Front-End Web Developer",
 		company: "Vela Ventures Inc.",
     companyUrl: "https://www.velaventures.net",
-		date: "December 2024 - Present",
+		date: "December 2024 - October 2025",
 		description: "In my current role, I specialize in developing betting websites and platforms such as Mansion88 and S5.com, using Next.js and JavaScript. My responsibilities include building and maintaining essential features, integrating third-party and internal APIs, and optimizing site performance to ensure a smooth and responsive user experience. I closely collaborate with designers to translate UI mockups into dynamic, interactive interfaces, and I write clean, maintainable code following best practices. I also coordinate with stakeholders to gather requirements, troubleshoot issues, and deploy updates, ensuring the platform meets user expectations and business objectives.",
     projectUrl: null,
     projectImages: null,
