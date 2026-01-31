@@ -19,7 +19,7 @@ const Page = () => {
     setIsPageLoading(false);
     setAlert("warning", "This feature is currently on development.");
     setIsAlertOpen(true);
-  }, []);
+  }, [setIsPageLoading, setAlert, setIsAlertOpen]);
 
   return (
     <div className={styles.about}>

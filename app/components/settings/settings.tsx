@@ -26,7 +26,7 @@ const Settings = () => {
     setIsPageLoading(true);
     Object.assign(document.body.style, themeStyles);
     setIsPageLoading(false);
-  }, [themeStyles]);
+  }, [themeStyles, setIsPageLoading]);
 
   if (isPageLoading) return null;
 

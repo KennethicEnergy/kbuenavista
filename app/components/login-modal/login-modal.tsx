@@ -14,7 +14,7 @@ type LoginModalProps = {
 };
 
 export default function LoginModal({ isOpen, onClose, onSuccess }: LoginModalProps) {
-  const { signInWithGoogle, signInWithEmail, signUpWithEmail } = useAuth();
+  const { signInWithEmail, signUpWithEmail } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isSignUp, setIsSignUp] = useState(false);
