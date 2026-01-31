@@ -21,7 +21,7 @@ const Page = () => {
 
   useEffect(() => {
     setIsPageLoading(false);
-  }, []);
+  }, [setIsPageLoading]);
 
   return (
     <div className={styles.project}>

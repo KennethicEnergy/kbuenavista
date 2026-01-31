@@ -56,7 +56,7 @@ const Profile = () => {
       const token = await getIdToken();
       if (!token) throw new Error("Not authenticated");
       await performDownload(token);
-    } catch (err) {
+    } catch {
       useAppStore.getState().setAlert("error", "Could not download resume. Please try again.");
       useAppStore.getState().setIsAlertOpen(true);
     }
