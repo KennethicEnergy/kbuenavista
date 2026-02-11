@@ -1,5 +1,5 @@
 "use client"
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import Link from 'next/link';
 import styles from './page.module.scss';
 import { useAppStore } from '@/app/store/app-store';
@@ -9,14 +9,24 @@ import { aboutSlideshowImages } from '@/app/constants/constants';
 
 const Page = () => {
   const { setIsPageLoading } = useAppStore();
+  const navigatingRef = useRef(false);
 
   useEffect(() => {
     setIsPageLoading(false);
   }, [setIsPageLoading]);
 
+  const handleBackClick = (e: React.MouseEvent) => {
+    if (navigatingRef.current) {
+      e.preventDefault();
+      return;
+    }
+    navigatingRef.current = true;
+    setIsPageLoading(true);
+  };
+
   return (
     <div className={styles.about}>
-      <Link href="/" onClick={() => setIsPageLoading(true)}>
+      <Link href="/" onClick={handleBackClick}>
         <h1>
           <IoIosArrowRoundBack />
           About
