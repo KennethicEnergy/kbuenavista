@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import styles from './profile.module.scss';
 import { country, fullName, githubUrl, googleDocId, introduction, linkedinUrl } from "@/app/constants/constants";
@@ -9,11 +9,30 @@ import { useAppStore } from '@/app/store/app-store';
 import { useAuth } from '@/app/providers/auth-provider';
 import LoginModal from '@/app/components/login-modal/login-modal';
 
+const PENDING_DOWNLOAD_KEY = "resumeDownloadAfterAuth";
+
 const Profile = () => {
   const { setIsPageLoading, isPageLoading } = useAppStore();
   const { user, getIdToken } = useAuth();
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [authConfigured, setAuthConfigured] = useState(true);
+
+  useEffect(() => {
+    if (!user) return;
+    if (typeof sessionStorage === "undefined") return;
+    if (sessionStorage.getItem(PENDING_DOWNLOAD_KEY) !== "1") return;
+    sessionStorage.removeItem(PENDING_DOWNLOAD_KEY);
+    getIdToken()
+      .then((token) => {
+        if (token) return performDownload(token);
+      })
+      .catch(() => {
+        useAppStore.getState().setAlert("error", "Could not download resume. Please try again.");
+        useAppStore.getState().setIsAlertOpen(true);
+      });
+    // Only run when user becomes available (e.g. after redirect on mobile)
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- performDownload is stable; we only want to react to user
+  }, [user]);
 
   const performDownload = async (token: string) => {
     const res = await fetch("/api/resume-download", {

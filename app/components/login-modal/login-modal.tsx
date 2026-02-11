@@ -44,10 +44,25 @@ export default function LoginModal({
     setError("");
     setLoading(true);
     try {
-      const { signInWithPopup, GoogleAuthProvider } = await import("firebase/auth");
+      const { signInWithPopup, signInWithRedirect, GoogleAuthProvider } = await import("firebase/auth");
       const auth = getFirebaseAuth();
       if (!auth) throw new Error("Firebase not initialized");
-      const result = await signInWithPopup(auth, new GoogleAuthProvider());
+      const provider = new GoogleAuthProvider();
+
+      const isMobile =
+        typeof navigator !== "undefined" &&
+        (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
+          (typeof window !== "undefined" && window.innerWidth < 768));
+
+      if (isMobile) {
+        if (typeof sessionStorage !== "undefined") {
+          sessionStorage.setItem("resumeDownloadAfterAuth", "1");
+        }
+        await signInWithRedirect(auth, provider);
+        return;
+      }
+
+      const result = await signInWithPopup(auth, provider);
       const token = await result.user.getIdToken();
       handleClose();
       onSuccess?.(token);
