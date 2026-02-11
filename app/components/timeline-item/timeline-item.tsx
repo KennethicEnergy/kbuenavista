@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
+import Link from "next/link";
 import styles from "./timeline-item.module.scss";
 import { CiImageOn } from "react-icons/ci";
 import { TimelineItemProps } from "@/app/constants/types";
-import { useRouter } from "next/navigation";
 import { useAppStore } from "@/app/store/app-store";
 
 const TimelineItem: React.FC<TimelineItemProps> = ({
@@ -16,16 +16,10 @@ const TimelineItem: React.FC<TimelineItemProps> = ({
   const [isExpanded, setIsExpanded] = useState(false);
   const [isClamped, setIsClamped] = useState(false);
   const descriptionRef = useRef<HTMLParagraphElement>(null);
-  const router = useRouter();
   const { setIsPageLoading, isPageLoading, theme } = useAppStore();
 
   const toggleClamp = () => {
     setIsExpanded((prev) => !prev);
-  };
-
-  const navigateToProject = (url: string) => {
-    setIsPageLoading(true)
-    router.push(url);
   };
 
   useEffect(() => {
@@ -46,7 +40,11 @@ const TimelineItem: React.FC<TimelineItemProps> = ({
       <div className={styles.content} >
         <h3 className={styles.title}>
           {title}
-          {projectUrl && <div className={styles.icon} onClick={() => navigateToProject(projectUrl)}><CiImageOn size={20}/></div>}
+          {projectUrl && (
+            <Link href={`/${projectUrl}`} className={styles.icon} onClick={() => setIsPageLoading(true)}>
+              <CiImageOn size={20} />
+            </Link>
+          )}
         </h3>
         <h4 className={styles.company} onClick={() => companyUrl && window.open(companyUrl, "_blank")}>{company}</h4>
         <p className={styles.date}>{date}</p>
