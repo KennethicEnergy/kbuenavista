@@ -1,3 +1,10 @@
+.staticRow {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
 .technologies {
   display: flex;
   flex-direction: column;

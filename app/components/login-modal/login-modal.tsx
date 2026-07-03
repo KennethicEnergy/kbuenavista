@@ -1,10 +1,9 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { IoIosClose } from "react-icons/io";
 import { FcGoogle } from "react-icons/fc";
 import styles from "./login-modal.module.scss";
-// import { useAuth } from "@/app/providers/auth-provider";
 import { getFirebaseAuth } from "@/lib/firebase";
 
 type LoginModalProps = {
@@ -22,23 +21,26 @@ export default function LoginModal({
   authConfigured = true,
   onDownloadWithoutSignIn,
 }: LoginModalProps) {
-  // const { signInWithEmail, signUpWithEmail } = useAuth();
-  // const [email, setEmail] = useState("");
-  // const [password, setPassword] = useState("");
-  // const [isSignUp, setIsSignUp] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-
-  // const resetForm = () => {
-  //   setEmail("");
-  //   setPassword("");
-  //   setError("");
-  // };
+  const modalRef = useRef<HTMLDivElement>(null);
 
   const handleClose = () => {
-    // resetForm();
     onClose();
   };
+
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") onClose();
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+    modalRef.current?.focus();
+
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [isOpen, onClose]);
 
   const handleGoogleSignIn = async () => {
     setError("");
@@ -73,33 +75,19 @@ export default function LoginModal({
     }
   };
 
-  // const handleEmailSubmit = async (e: React.FormEvent) => {
-  //   e.preventDefault();
-  //   setError("");
-  //   setLoading(true);
-  //   try {
-  //     if (isSignUp) {
-  //       await signUpWithEmail(email, password);
-  //     } else {
-  //       await signInWithEmail(email, password);
-  //     }
-  //     const auth = getFirebaseAuth();
-  //     const user = auth?.currentUser;
-  //     const token = user ? await user.getIdToken() : "";
-  //     handleClose();
-  //     if (token) onSuccess?.(token);
-  //   } catch (err) {
-  //     setError(err instanceof Error ? err.message : "Authentication failed");
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
-
   if (!isOpen) return null;
 
   return (
     <div className={styles.overlay} onClick={handleClose}>
-      <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
+      <div
+        ref={modalRef}
+        className={styles.modal}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="login-modal-title"
+        tabIndex={-1}
+        onClick={(e) => e.stopPropagation()}
+      >
         <button
           type="button"
           className={styles.closeButton}
@@ -109,14 +97,14 @@ export default function LoginModal({
           <IoIosClose size={28} />
         </button>
 
-        <h2 className={styles.title}>Sign in to download resume</h2>
+        <h2 id="login-modal-title" className={styles.title}>Sign in to download resume</h2>
         <p className={styles.subtitle}>
           {authConfigured
             ? "Your email will be shared so we can stay in touch."
             : "Sign-in is not configured for this deployment."}
         </p>
 
-        {error && <p className={styles.error}>{error}</p>}
+        {error && <p className={styles.error} role="alert">{error}</p>}
 
         {!authConfigured && onDownloadWithoutSignIn ? (
           <button
@@ -130,56 +118,15 @@ export default function LoginModal({
             Download resume
           </button>
         ) : (
-          <>
-        <button
-          type="button"
-          className={styles.googleButton}
-          onClick={handleGoogleSignIn}
-          disabled={loading}
-        >
-          <FcGoogle size={22} />
-          Continue with Google
-        </button>
-
-        {/* <div className={styles.divider}>
-          <span>or</span>
-        </div> */}
-
-        {/* <form onSubmit={handleEmailSubmit} className={styles.form}>
-          <input
-            type="email"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            className={styles.input}
-            autoComplete="email"
-          />
-          <input
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            className={styles.input}
-            autoComplete={isSignUp ? "new-password" : "current-password"}
-          />
-          <button type="submit" className={styles.submitButton} disabled={loading}>
-            {loading ? "Please wait..." : isSignUp ? "Create account" : "Sign in"}
+          <button
+            type="button"
+            className={styles.googleButton}
+            onClick={handleGoogleSignIn}
+            disabled={loading}
+          >
+            <FcGoogle size={22} />
+            {loading ? "Signing in..." : "Continue with Google"}
           </button>
-        </form> */}
-
-        {/* <button
-          type="button"
-          className={styles.toggleMode}
-          onClick={() => {
-            setIsSignUp((prev) => !prev);
-            setError("");
-          }}
-        >
-          {isSignUp ? "Already have an account? Sign in" : "Need an account? Sign up"}
-        </button> */}
-          </>
         )}
       </div>
     </div>
