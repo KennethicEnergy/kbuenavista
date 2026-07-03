@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useEffect, useState } from "react";
 import TimelineItem from "../timeline-item/timeline-item";
 import styles from "./timeline.module.scss";
@@ -6,11 +8,9 @@ import { useAppStore } from "@/app/store/app-store";
 
 const Timeline: React.FC = () => {
   const { theme } = useAppStore();
-
   const [isExpanded, setIsExpanded] = useState(false);
 
   const sortedData = [...timelineData].sort((a, b) => b.id - a.id);
-
   const itemsToShow = isExpanded ? sortedData : sortedData.slice(0, 3);
 
   const handleExpand = () => {
@@ -25,7 +25,7 @@ const Timeline: React.FC = () => {
 
   return (
     <div className={styles.timeline} data-theme={theme}>
-      {itemsToShow.map((item) => (
+      {itemsToShow.map((item, index) => (
         <TimelineItem
           key={item.id}
           title={item.title}
@@ -34,11 +34,20 @@ const Timeline: React.FC = () => {
           companyUrl={item.companyUrl}
           company={item.company}
           description={item.description}
+          isCurrent={index === 0}
         />
       ))}
-      {timelineData.length > 3 && <button className={styles.expandButton} onClick={handleExpand} data-theme={theme}>
-        {isExpanded ? "Show Less" : "Show More"}
-      </button>}
+      {timelineData.length > 3 && (
+        <button
+          type="button"
+          className={styles.expandButton}
+          onClick={handleExpand}
+          data-theme={theme}
+          aria-expanded={isExpanded}
+        >
+          {isExpanded ? "Show Less" : "Show More"}
+        </button>
+      )}
     </div>
   );
 };

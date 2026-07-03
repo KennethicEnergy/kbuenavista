@@ -29,15 +29,17 @@ const Page = () => {
 
   return (
     <div className={styles.project}>
-      <h1>
+      <div className={styles.projectHeader}>
         <Link href="/" onClick={handleBackClick}>
-          <IoIosArrowRoundBack />
-          {projectData?.projectName}
+          <IoIosArrowRoundBack size={30}/>
         </Link>
-      </h1>
+        <h1>
+          {projectData?.projectName}
+        </h1>
+      </div>
       <Card
         projectGif={projectData?.projectGif ?? '/images/fallback-img.jpg'}
-        projectTechStack={projectData?.projectTechStack ?? []}/>
+        projectTechStack={projectData?.projectTechStack ?? []} />
       <p>{projectData?.projectDescription ?? 'No project description found.'}</p>
     </div>
   )

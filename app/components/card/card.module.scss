@@ -11,8 +11,10 @@
   max-width: 580px;
   aspect-ratio: 16 / 9;
   background: #171717;
-  transition: all var(--transition-normal) var(--ease-out);
-  transform: translateZ(0); /* Enable hardware acceleration */
+  transition: transform var(--transition-normal) var(--ease-out),
+              box-shadow var(--transition-normal) var(--ease-out),
+              border-color var(--transition-normal) var(--ease-out);
+  transform: translateZ(0);
 
   &:hover {
     transform: translateY(-4px) translateZ(0);
@@ -25,7 +27,8 @@
     height: 100%;
     object-fit: contain;
     filter: brightness(0.65);
-    transition: all var(--transition-slow) var(--ease-out);
+    transition: filter var(--transition-slow) var(--ease-out),
+                transform var(--transition-slow) var(--ease-out);
     transform: scale(1);
   }
 
@@ -79,35 +82,10 @@
     }
   }
 
-  .enterFullScreen {
-    color: #fff;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: absolute;
-    opacity: 0;
-    visibility: hidden;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%) scale(0.8);
-    transition: all var(--transition-normal) var(--ease-out);
-    background-color: rgba(0, 0, 0, 0.7);
-    border-radius: 50%;
-    width: 60px;
-    height: 60px;
-    backdrop-filter: blur(4px);
-  }
-
   &:hover {
     img {
-      filter: brightness(0.3) blur(8px);
-      transform: scale(1.05);
-    }
-
-    .enterFullScreen {
-      opacity: 1;
-      visibility: visible;
-      transform: translate(-50%, -50%) scale(1);
+      filter: brightness(0.45);
+      transform: scale(1.02);
     }
 
     .madeWith {

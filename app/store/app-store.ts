@@ -1,35 +1,46 @@
 import { createJSONStorage, persist } from 'zustand/middleware'
 
-import { ApplicationStore } from '../constants/types'
+import { AlertType, ApplicationStore } from '../constants/types'
 import { create } from 'zustand'
+
+let alertTimeoutId: ReturnType<typeof setTimeout> | null = null;
+
+const clearAlertTimeout = () => {
+  if (alertTimeoutId) {
+    clearTimeout(alertTimeoutId);
+    alertTimeoutId = null;
+  }
+};
 
 export const useAppStore = create<ApplicationStore>()(
   persist(
     (set) => ({
-      lang: 'en',
       theme: 'dark',
-      currentModal: null,
-      isModalOpen: false,
       isPageLoading: false,
       isAlertOpen: false,
       isAlertDismissable: true,
       alertMessage: null,
       alertType: null,
-      setTheme: (theme: string) => set({ theme }),
-      setIsAlertOpen: (open: boolean) => set({ isAlertOpen: open }),
-      setAlert(type: string | null, message: string | null, isDismissable: boolean = true) {
-        set({ alertType: type, alertMessage: message, isAlertDismissable: isDismissable })
-        setTimeout(() =>
-          set({ alertType: null, alertMessage: null, isAlertDismissable: true, isAlertOpen: false })
-        , 5000);
+      setTheme: (theme) => set({ theme }),
+      setIsAlertOpen: (open) => set({ isAlertOpen: open }),
+      setAlert(type: AlertType, message: string, isDismissable = true) {
+        clearAlertTimeout();
+        set({ alertType: type, alertMessage: message, isAlertDismissable: isDismissable, isAlertOpen: true });
+        alertTimeoutId = setTimeout(() => {
+          set({ alertType: null, alertMessage: null, isAlertDismissable: true, isAlertOpen: false });
+          alertTimeoutId = null;
+        }, 5000);
       },
-      setLang: (lang: string) => set({ lang }),
-      setModal: (view: number | null) => set({ currentModal: view }),
-      setIsModalOpen: (open: boolean) => set({ isModalOpen: open }),
-      setIsPageLoading: (loading: boolean) => set({ isPageLoading: loading }),
-      resetAlert: () => set({ alertType: null, alertMessage: null, isAlertDismissable: true, isAlertOpen: false }),
-      resetAppStore: () => set({ lang: 'en', currentModal: null, isModalOpen: false, isPageLoading: false }),
+      setIsPageLoading: (loading) => set({ isPageLoading: loading }),
+      resetAlert: () => {
+        clearAlertTimeout();
+        set({ alertType: null, alertMessage: null, isAlertDismissable: true, isAlertOpen: false });
+      },
     }),
-    { name: 'application-store', storage: createJSONStorage(() => localStorage) },
+    {
+      name: 'application-store',
+      storage: createJSONStorage(() => localStorage),
+      partialize: (state) => ({ theme: state.theme }),
+    },
   ),
 )

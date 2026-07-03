@@ -3,7 +3,7 @@
   display: flex;
   align-items: flex-start;
   margin-bottom: 30px;
-  transition: all var(--transition-normal) var(--ease-out);
+  transition: transform var(--transition-normal) var(--ease-out);
 
   &:last-child {
     margin-bottom: 0;
@@ -17,7 +17,9 @@
     background: none;
     border: none;
     width: fit-content;
-    transition: all var(--transition-normal) var(--ease-out);
+    transition: transform var(--transition-normal) var(--ease-out),
+                background-color var(--transition-normal) var(--ease-out),
+                box-shadow var(--transition-normal) var(--ease-out);
     border-radius: 4px;
     padding: 4px 8px;
 
@@ -45,11 +47,8 @@
   box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
   z-index: 2;
   flex-shrink: 0;
-  transition: all var(--transition-normal) var(--ease-out);
-
-  &:last-child {
-    background-color: #007bff;
-  }
+  transition: transform var(--transition-normal) var(--ease-out),
+              box-shadow var(--transition-normal) var(--ease-out);
 
   &:hover {
     transform: scale(1.2);
@@ -57,16 +56,19 @@
   }
 }
 
+.markerCurrent {
+  background-color: #007bff;
+}
+
 .content {
   padding: 0 15px;
   border-radius: 8px;
   width: 100%;
-  transition: all var(--transition-normal) var(--ease-out);
+  transition: transform var(--transition-normal) var(--ease-out);
 
   button {
-    color:#ececec;
+    color: #ececec;
     cursor: pointer;
-    transition: all var(--transition-normal) var(--ease-out);
 
     &[data-theme="light"] {
       color: #171717;
@@ -86,7 +88,9 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    transition: all var(--transition-normal) var(--ease-out);
+    transition: transform var(--transition-normal) var(--ease-out),
+                background-color var(--transition-normal) var(--ease-out),
+                color var(--transition-normal) var(--ease-out);
     border-radius: 4px;
     padding: 4px;
     cursor: pointer;
@@ -105,19 +109,22 @@
   }
 }
 
-.company {
+.company,
+.companyStatic {
   font-size: 1rem;
   font-weight: 600;
   color: #555;
   margin-bottom: 10px;
-  border-bottom: 1px solid transparent;
   width: fit-content;
-  transition: all var(--transition-normal) var(--ease-out);
-  cursor: pointer;
+  transition: color var(--transition-normal) var(--ease-out),
+              transform var(--transition-normal) var(--ease-out);
+}
+
+.company {
+  text-decoration: none;
 
   &:hover {
-    color: #777;
-    border-bottom: 1px solid #777;
+    color: #999;
     transform: translateY(-1px);
   }
 }
@@ -137,7 +144,6 @@
   overflow: hidden;
   text-overflow: ellipsis;
   line-height: 1.5;
-  transition: all var(--transition-normal) var(--ease-out);
 }
 
 .descriptionList {
@@ -147,10 +153,10 @@
   gap: 0.5rem;
   margin-left: 1rem;
   line-height: 1.5;
-  transition: all var(--transition-normal) var(--ease-out);
 
   li {
-    transition: all var(--transition-normal) var(--ease-out);
+    transition: transform var(--transition-normal) var(--ease-out),
+                color var(--transition-normal) var(--ease-out);
 
     &:hover {
       transform: translateX(4px);
@@ -160,24 +166,6 @@
     &::marker {
       font-size: 1.2em;
       color: #fff;
-      transition: color var(--transition-normal) var(--ease-out);
     }
-  }
-}
-
-.link {
-  display: inline-block;
-  color: #007bff;
-  margin-top: 5px;
-  text-decoration: none;
-  transition: all var(--transition-normal) var(--ease-out);
-  border-radius: 4px;
-  padding: 2px 4px;
-
-  &:hover {
-    text-decoration: underline;
-    transform: translateY(-1px);
-    background-color: rgba(0, 123, 255, 0.1);
-    box-shadow: 0 2px 8px rgba(0, 123, 255, 0.2);
   }
 }

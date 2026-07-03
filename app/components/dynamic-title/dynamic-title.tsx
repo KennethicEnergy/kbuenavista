@@ -2,19 +2,22 @@
 
 import { useEffect } from "react";
 
-const TITLES = ["Kenneth Buenavista", "Hire Me ✋"];
+const DEFAULT_TITLE = "Kenneth Buenavista";
+const IDLE_TITLE = "Hire Me ✋";
 
 export default function DynamicTitle() {
   useEffect(() => {
-    let index = 0;
-    document.title = TITLES[0];
+    const handleVisibilityChange = () => {
+      document.title = document.hidden ? IDLE_TITLE : DEFAULT_TITLE;
+    };
 
-    const interval = setInterval(() => {
-      index = (index + 1) % TITLES.length;
-      document.title = TITLES[index];
-    }, 1000);
+    document.title = DEFAULT_TITLE;
+    document.addEventListener("visibilitychange", handleVisibilityChange);
 
-    return () => clearInterval(interval);
+    return () => {
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+      document.title = DEFAULT_TITLE;
+    };
   }, []);
 
   return null;

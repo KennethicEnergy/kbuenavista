@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import styles from './profile.module.scss';
@@ -12,27 +14,10 @@ import LoginModal from '@/app/components/login-modal/login-modal';
 const PENDING_DOWNLOAD_KEY = "resumeDownloadAfterAuth";
 
 const Profile = () => {
-  const { setIsPageLoading, isPageLoading } = useAppStore();
+  const { setIsPageLoading, isPageLoading, setAlert } = useAppStore();
   const { user, getIdToken } = useAuth();
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [authConfigured, setAuthConfigured] = useState(true);
-
-  useEffect(() => {
-    if (!user) return;
-    if (typeof sessionStorage === "undefined") return;
-    if (sessionStorage.getItem(PENDING_DOWNLOAD_KEY) !== "1") return;
-    sessionStorage.removeItem(PENDING_DOWNLOAD_KEY);
-    getIdToken()
-      .then((token) => {
-        if (token) return performDownload(token);
-      })
-      .catch(() => {
-        useAppStore.getState().setAlert("error", "Could not download resume. Please try again.");
-        useAppStore.getState().setIsAlertOpen(true);
-      });
-    // Only run when user becomes available (e.g. after redirect on mobile)
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- performDownload is stable; we only want to react to user
-  }, [user]);
 
   const performDownload = async (token: string) => {
     const res = await fetch("/api/resume-download", {
@@ -49,6 +34,20 @@ const Profile = () => {
     link.click();
     document.body.removeChild(link);
   };
+
+  useEffect(() => {
+    if (!user) return;
+    if (typeof sessionStorage === "undefined") return;
+    if (sessionStorage.getItem(PENDING_DOWNLOAD_KEY) !== "1") return;
+    sessionStorage.removeItem(PENDING_DOWNLOAD_KEY);
+    getIdToken()
+      .then((token) => {
+        if (token) return performDownload(token);
+      })
+      .catch(() => {
+        setAlert("error", "Could not download resume. Please try again.");
+      });
+  }, [user, getIdToken, setAlert]);
 
   const openResumePdf = () => {
     const url = `https://docs.google.com/document/d/${googleDocId}/export?format=pdf`;
@@ -74,15 +73,13 @@ const Profile = () => {
       if (!token) throw new Error("Not authenticated");
       await performDownload(token);
     } catch {
-      useAppStore.getState().setAlert("error", "Could not download resume. Please try again.");
-      useAppStore.getState().setIsAlertOpen(true);
+      setAlert("error", "Could not download resume. Please try again.");
     }
   };
 
   const handleLoginSuccess = (token: string) => {
     performDownload(token).catch(() => {
-      useAppStore.getState().setAlert("error", "Could not download resume. Please try again.");
-      useAppStore.getState().setIsAlertOpen(true);
+      setAlert("error", "Could not download resume. Please try again.");
     });
   };
 
@@ -101,23 +98,29 @@ const Profile = () => {
         }}
       />
       <div className={styles.profile}>
-      <div className={styles.nameRow}>
-        <h1 className={styles.name}>
-          <Link href="/pages/about" onClick={() => setIsPageLoading(true)}>
-            {fullName}
-          </Link>
-        </h1>
-        <div className={styles.socials}>
-          <span onClick={handleDownload}><MdFileDownload size={20}/></span>
-          <span onClick={() => window.open(linkedinUrl, "_blank")}><IoLogoLinkedin size={30}/></span>
-          <span onClick={() => window.open(githubUrl, "_blank")}><BiLogoGithub size={30}/></span>
+        <div className={styles.nameRow}>
+          <h1 className={styles.name}>
+            <Link href="/pages/about" onClick={() => setIsPageLoading(true)}>
+              {fullName}
+            </Link>
+          </h1>
+          <div className={styles.socials}>
+            <button type="button" onClick={handleDownload} aria-label="Download resume">
+              <MdFileDownload size={20}/>
+            </button>
+            <a href={linkedinUrl} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn profile">
+              <IoLogoLinkedin size={30}/>
+            </a>
+            <a href={githubUrl} target="_blank" rel="noopener noreferrer" aria-label="GitHub profile">
+              <BiLogoGithub size={30}/>
+            </a>
+          </div>
         </div>
+        <div className={styles.location}>
+          <p>{country}</p>
+        </div>
+        <p className={styles.intro}>{introduction}</p>
       </div>
-      <div className={styles.location}>
-        <p>{country}</p>
-      </div>
-      <p className={styles.intro}>{introduction}</p>
-    </div>
     </>
   )
 }

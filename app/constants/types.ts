@@ -5,6 +5,7 @@ export type TimelineItemProps = {
   projectUrl: string | null;
   companyUrl: string | null;
   description: string | Array<string>;
+  isCurrent?: boolean;
 }
 
 export type TimelineData = {
@@ -22,23 +23,19 @@ export type TimelineData = {
   projectTechStack: Array<string> | null;
 }
 
+export type Theme = 'light' | 'dark';
+export type AlertType = 'success' | 'error' | 'warning' | 'info' | 'default';
+
 export interface ApplicationStore {
-  lang: string;
-  alertMessage: string | null;
-  theme: string;
-  currentModal: number | null;
-  isModalOpen: boolean;
+  theme: Theme;
   isPageLoading: boolean;
   isAlertOpen: boolean;
-  alertType?: string | null;
-  isAlertDismissable?: boolean;
-  setTheme(theme: string): void;
-  setLang: (lang: string) => void;
-  setAlert: (type: string | null, message: string | null, isDismissable?: boolean) => void;
-  setModal: (view: number| null) => void;
-  setIsModalOpen: (open: boolean) => void;
+  alertMessage: string | null;
+  alertType: AlertType | null;
+  isAlertDismissable: boolean;
+  setTheme: (theme: Theme) => void;
+  setAlert: (type: AlertType, message: string, isDismissable?: boolean) => void;
   setIsPageLoading: (loading: boolean) => void;
   setIsAlertOpen: (open: boolean) => void;
-  resetAppStore: () =>  void;
   resetAlert: () => void;
 }
