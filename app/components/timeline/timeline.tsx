@@ -3,14 +3,22 @@
 import React, { useEffect, useState } from "react";
 import TimelineItem from "../timeline-item/timeline-item";
 import styles from "./timeline.module.scss";
-import { timelineData } from "@/app/constants/data";
+import { timelineData, activitiesData } from "@/app/constants/data";
 import { useAppStore } from "@/app/store/app-store";
 
 const Timeline: React.FC = () => {
   const { theme } = useAppStore();
   const [isExpanded, setIsExpanded] = useState(false);
 
-  const sortedData = [...timelineData].sort((a, b) => b.id - a.id);
+  const sortedData = [...timelineData, ...activitiesData.map((activity) => ({
+    id: activity.id,
+    title: activity.title,
+    company: activity.organization,
+    companyUrl: activity.organizationUrl,
+    date: activity.location ? `${activity.date} · ${activity.location}` : activity.date,
+    description: activity.description,
+    projectUrl: null,
+  }))].sort((a, b) => b.id - a.id);
   const itemsToShow = isExpanded ? sortedData : sortedData.slice(0, 3);
 
   const handleExpand = () => {
@@ -37,7 +45,7 @@ const Timeline: React.FC = () => {
           isCurrent={index === 0}
         />
       ))}
-      {timelineData.length > 3 && (
+      {timelineData.length + activitiesData.length > 3 && (
         <button
           type="button"
           className={styles.expandButton}
