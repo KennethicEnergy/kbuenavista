@@ -8,6 +8,16 @@ export type TimelineItemProps = {
   isCurrent?: boolean;
 }
 
+export type ActivityData = {
+  id: number;
+  title: string;
+  organization: string;
+  organizationUrl: string | null;
+  date: string;
+  location: string | null;
+  description: string;
+}
+
 export type TimelineData = {
   id: number;
   title: string;

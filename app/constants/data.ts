@@ -1,4 +1,5 @@
-import { TimelineData } from "./types";
+import { ActivityData, TimelineData } from "./types";
+
 
 export const timelineData: TimelineData[] = [
 	{
@@ -169,5 +170,17 @@ Delivers proposals and guides customers through the application process without 
       'Animated Interactions',
       'Responsive UI',
 		]
+	},
+];
+
+export const activitiesData: ActivityData[] = [
+	{
+		id: 15,
+		title: "Conference Attendee",
+		organization: "NG-MY 2019",
+		organizationUrl: "https://2019.ng-my.org/",
+		date: "July 6–7, 2019",
+		location: "Sunway University, Malaysia",
+		description: "Attended NG-MY 2019 (#ngMY2019) — the first-ever Angular conference in Southeast Asia and a labour-of-love community event for the Angular ecosystem in Malaysia. Spent two days at Sunway University learning from industry speakers, exploring technical sessions on Angular best practices, and connecting with developers across the region. The conference deepened my understanding of modern frontend architecture and strengthened my commitment to building with Angular and the wider JavaScript community.",
 	},
 ];
