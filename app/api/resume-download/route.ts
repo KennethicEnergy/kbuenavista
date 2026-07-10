@@ -1,8 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { verifyIdToken } from "@/lib/firebase-admin";
-import { googleDocId } from "@/app/constants/constants";
-
-const RESUME_PDF_URL = `https://docs.google.com/document/d/${googleDocId}/export?format=pdf`;
+import { getSite } from "@/lib/content";
+import { logResumeDownload, verifyIdToken } from "@/lib/firebase/admin";
 
 export async function POST(request: NextRequest) {
   try {
@@ -13,17 +11,30 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    await verifyIdToken(token);
+    const decoded = await verifyIdToken(token);
+    const site = getSite();
+    const resumeUrl = `https://docs.google.com/document/d/${site.googleDocId}/export?format=pdf`;
 
-    return NextResponse.json({ url: RESUME_PDF_URL });
+    await logResumeDownload({
+      uid: decoded.uid,
+      email: decoded.email,
+      displayName: decoded.name,
+      userAgent: request.headers.get("user-agent"),
+    });
+
+    return NextResponse.json({ url: resumeUrl });
   } catch (error) {
     const message = error instanceof Error ? error.message : "Unknown error";
-    const code = error && typeof error === "object" && "code" in error ? (error as { code: string }).code : "";
-    console.error("Resume download error:", code || message, error);
+    console.error("Resume download error:", message, error);
     const isDev = process.env.NODE_ENV === "development";
-    const details = isDev
-      ? message
-      : "Token verification failed. Ensure FIREBASE_SERVICE_ACCOUNT_KEY is set on Vercel and matches the same Firebase project as your client config. Check the function logs for the exact error.";
-    return NextResponse.json({ error: "Unauthorized", details }, { status: 401 });
+    return NextResponse.json(
+      {
+        error: "Unauthorized",
+        details: isDev
+          ? message
+          : "Token verification failed. Check Firebase Admin configuration.",
+      },
+      { status: 401 },
+    );
   }
 }

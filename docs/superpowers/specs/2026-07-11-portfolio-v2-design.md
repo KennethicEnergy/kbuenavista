@@ -62,7 +62,7 @@ public/images/
 
 ### Stack
 
-- **Next.js** latest stable (App Router), **React 19**, **TypeScript**
+- **Next.js** latest stable (App Router), **React 19**, **TypeScript**, **pnpm**
 - **Tailwind CSS v4**
 - **Firebase** Auth (Google) + Admin (token verify) + Firestore (`resume_downloads`)
 - **Vercel Analytics** (+ optional Speed Insights) for visits
@@ -83,6 +83,8 @@ v1 implementation reads from `content/data.ts` / `content/site.ts`.
 Later: swap to Firestore behind the same functions; components stay unchanged.
 
 Port existing types from `app/constants/types.ts` and data from `app/constants/data.ts` + `constants.ts`.
+
+When porting, convert legacy `projectUrl` values like `pages/tcs` into clean slugs (`tcs`, `collabera`, `w-bridges`) and route them at `/projects/[slug]`. About moves from `/pages/about` to `/about`.
 
 ---
 
