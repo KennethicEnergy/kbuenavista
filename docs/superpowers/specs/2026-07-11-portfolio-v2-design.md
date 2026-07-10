@@ -205,7 +205,7 @@ Rebuild the Kenneth Buenavista portfolio as a FRESH Next.js app in this repo (re
 - Placeholders for project/about images; EVERY image via SafeImage with fallback `/images/fallback.jpg`.
 
 ## Stack
-- Latest stable Next.js (App Router) + React 19 + TypeScript + Tailwind CSS v4.
+- Latest stable Next.js (App Router) + React 19 + TypeScript + Tailwind CSS v4 + **pnpm**.
 - Firebase Auth (Google) + Firebase Admin token verify + Firestore resume_downloads logging.
 - Vercel Analytics for visits.
 - Content: port app/constants/data.ts + constants.ts into content/ with types; expose via lib/content repository (local data now, Firestore-swappable later).
