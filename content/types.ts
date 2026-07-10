@@ -6,6 +6,9 @@ export type ActivityData = {
   date: string;
   location: string | null;
   description: string;
+  images: string[] | null;
+  /** Clean slug for `/activities/[slug]`, or null when no activity page */
+  activitySlug: string | null;
 };
 
 export type TimelineData = {
@@ -33,5 +36,7 @@ export type SiteContent = {
   googleDocId: string;
   aboutSlideshowImages: string[];
 };
+
+export type SiteContentBase = Omit<SiteContent, "aboutSlideshowImages">;
 
 export type AlertType = "success" | "error" | "warning" | "info" | "default";

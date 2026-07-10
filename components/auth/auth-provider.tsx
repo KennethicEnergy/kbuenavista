@@ -16,7 +16,9 @@ type AuthContextValue = {
   user: User | null;
   loading: boolean;
   configured: boolean;
-  signInWithGoogle: (preferRedirect?: boolean) => Promise<string | null>;
+  signInWithGoogle: (
+    preferRedirect?: boolean,
+  ) => Promise<{ token: string; displayName: string | null } | null>;
   signOut: () => Promise<void>;
   getIdToken: () => Promise<string | null>;
 };
@@ -70,7 +72,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         }
 
         const result = await signInWithPopup(auth, provider);
-        return result.user.getIdToken();
+        const token = await result.user.getIdToken();
+        return { token, displayName: result.user.displayName };
       },
       signOut: async () => {
         const auth = getFirebaseAuth();

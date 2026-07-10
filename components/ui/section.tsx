@@ -11,16 +11,16 @@ type SectionProps = {
 
 export function Section({ children, className, id, title, subtitle }: SectionProps) {
   return (
-    <section id={id} className={cn("w-full py-12 md:py-16", className)}>
+    <section id={id} className={cn("w-full pb-8", className)}>
       {(title || subtitle) && (
-        <header className="mb-8 animate-fade-up">
+        <header className="mb-6 animate-fade-up">
           {title ? (
-            <h2 className="font-display text-2xl font-semibold tracking-tight text-text-primary md:text-3xl">
+            <h2 className="font-display text-xl font-semibold tracking-tight text-brand md:text-2xl ">
               {title}
             </h2>
           ) : null}
           {subtitle ? (
-            <p className="mt-2 max-w-2xl text-text-muted">{subtitle}</p>
+            <p className="mt-1 max-w-2xl text-sm text-text-muted">{subtitle}</p>
           ) : null}
         </header>
       )}

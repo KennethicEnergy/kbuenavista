@@ -11,16 +11,19 @@ type AboutSlideshowProps = {
 export function AboutSlideshow({ images }: AboutSlideshowProps) {
   const [index, setIndex] = useState(0);
   const slides = images.length > 0 ? images : ["/images/placeholders/about.jpg"];
+  const hasMultipleSlides = slides.length > 1;
 
   useEffect(() => {
+    if (!hasMultipleSlides) return;
+
     const timer = window.setInterval(() => {
       setIndex((current) => (current + 1) % slides.length);
     }, 4000);
     return () => window.clearInterval(timer);
-  }, [slides.length]);
+  }, [hasMultipleSlides, slides.length]);
 
   return (
-    <div className="relative aspect-[4/5] w-full overflow-hidden rounded-2xl border border-bg-elevated bg-bg-surface">
+    <div className="relative aspect-[4/5] w-full overflow-hidden">
       {slides.map((src, i) => (
         <div
           key={`${src}-${i}`}
@@ -39,20 +42,22 @@ export function AboutSlideshow({ images }: AboutSlideshowProps) {
           />
         </div>
       ))}
-      <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-2">
-        {slides.map((_, i) => (
-          <button
-            key={i}
-            type="button"
-            aria-label={`Show slide ${i + 1}`}
-            className={cn(
-              "h-2 w-2 rounded-full transition-colors",
-              i === index ? "bg-brand" : "bg-text-muted/50",
-            )}
-            onClick={() => setIndex(i)}
-          />
-        ))}
-      </div>
+      {hasMultipleSlides ? (
+        <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-2">
+          {slides.map((_, i) => (
+            <button
+              key={i}
+              type="button"
+              aria-label={`Show slide ${i + 1}`}
+              className={cn(
+                "h-2 w-2 rounded-full transition-colors",
+                i === index ? "bg-brand" : "bg-text-muted/50",
+              )}
+              onClick={() => setIndex(i)}
+            />
+          ))}
+        </div>
+      ) : null}
     </div>
   );
 }

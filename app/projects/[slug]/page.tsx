@@ -52,19 +52,14 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
       <p className="mt-6 max-w-3xl text-text-muted">{project.projectDescription}</p>
 
       {project.projectTechStack?.length ? (
-        <ul className="mt-6 flex flex-wrap gap-2">
+        <ul className="mt-6 flex flex-wrap gap-x-3 gap-y-1 text-sm text-text-muted">
           {project.projectTechStack.map((tech) => (
-            <li
-              key={tech}
-              className="rounded-md bg-bg-elevated px-3 py-1 text-xs text-text-primary"
-            >
-              {tech}
-            </li>
+            <li key={tech}>{tech}</li>
           ))}
         </ul>
       ) : null}
 
-      <div className="relative mt-10 aspect-video w-full overflow-hidden rounded-2xl border border-bg-elevated bg-bg-surface">
+      <div className="relative mt-10 aspect-video w-full overflow-hidden">
         <SafeImage
           src={project.projectGif ?? images[0]}
           alt={`${project.projectName} preview`}
@@ -79,7 +74,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
         {images.map((src, index) => (
           <div
             key={`${src}-${index}`}
-            className="relative aspect-video overflow-hidden rounded-xl border border-bg-elevated bg-bg-surface"
+            className="relative aspect-video overflow-hidden"
           >
             <SafeImage
               src={src}
