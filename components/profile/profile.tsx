@@ -140,7 +140,7 @@ export function Profile({ site }: ProfileProps) {
       <section className="flex flex-col items-start justify-between py-10 animate-fade-up md:py-12 lg:flex-row">
         <div>
           <h1 className="font-display text-4xl font-bold tracking-tight text-text-primary lg:text-7xl">
-            <Link href="/about" className="text-brand transition-colors hover:underline">
+            <Link href="/me" className="text-brand transition-colors hover:underline">
               {site.fullName}
             </Link>
           </h1>
