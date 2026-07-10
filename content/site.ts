@@ -9,5 +9,5 @@ export const site: SiteContentBase = {
   // googleDocId: "1Hhe7097d9GVNDvz5JibYl1N80DdSg7wYhvK3CIbjjr0", // OLD
   googleDocId: "12jqm7Qfym_TsYqDcTB4QYkXJOc8NCV-Hp8DgC0ZcGLU",
   /** Used for Open Graph / absolute URLs. Override with NEXT_PUBLIC_SITE_URL. */
-  siteUrl: "https://knvzta.com",
+  siteUrl: "https://kbuenavista.com",
 };
