@@ -85,3 +85,19 @@ For **“Sign in with Google → download resume”** to work in production:
 | 5 | **Redeploy** | After changing env vars, trigger a new deployment. |
 
 If it still fails, check Vercel → Logs (or Functions → resume-download) for the exact error.
+
+---
+
+## 5. Firestore (resume download logs)
+
+Enable **Firestore** in the Firebase Console (production mode or test mode for local).
+
+Each successful resume download writes a document to collection `resume_downloads`:
+
+- `uid`, `email`, `displayName`, `userAgent`, `downloadedAt`
+
+No admin UI in v1 — inspect documents in the Firebase Console.
+
+## Package manager
+
+This project uses **pnpm** (`pnpm install`, `pnpm dev`, `pnpm build`).
