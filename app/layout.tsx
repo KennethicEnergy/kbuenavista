@@ -4,6 +4,7 @@ import { Barlow_Condensed, DM_Sans } from "next/font/google";
 import { AuthProvider } from "@/components/auth/auth-provider";
 import DynamicTitle from "@/components/dynamic-title/dynamic-title";
 import { Toaster } from "@/components/ui/toaster";
+import { site } from "@/content/site";
 import "./globals.css";
 
 const dmSans = DM_Sans({
@@ -18,7 +19,10 @@ const barlow = Barlow_Condensed({
   weight: ["400", "600", "700"],
 });
 
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? site.siteUrl;
+
 export const metadata: Metadata = {
+  metadataBase: new URL(siteUrl),
   title: {
     default: "Kenneth Buenavista",
     template: "%s | Kenneth Buenavista",
@@ -32,6 +36,13 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_US",
     siteName: "Kenneth Buenavista",
+    url: siteUrl,
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Kenneth Buenavista",
+    description:
+      "Senior Frontend Developer portfolio — React, Next.js, TypeScript, and modern web experiences.",
   },
   robots: {
     index: true,

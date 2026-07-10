@@ -27,16 +27,18 @@ export type TimelineData = {
   projectTechStack: string[] | null;
 };
 
-export type SiteContent = {
+export type SiteContentBase = {
   fullName: string;
   introduction: string;
   country: string;
   githubUrl: string;
   linkedinUrl: string;
   googleDocId: string;
-  aboutSlideshowImages: string[];
+  siteUrl: string;
 };
 
-export type SiteContentBase = Omit<SiteContent, "aboutSlideshowImages">;
+export type SiteContent = SiteContentBase & {
+  aboutSlideshowImages: string[];
+};
 
 export type AlertType = "success" | "error" | "warning" | "info" | "default";
