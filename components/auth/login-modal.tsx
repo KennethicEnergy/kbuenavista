@@ -3,18 +3,19 @@
 import { useEffect, useRef, useState } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { IoClose } from "react-icons/io5";
+import { MdErrorOutline } from "react-icons/md";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/components/auth/auth-provider";
+import { toaster } from "@/lib/toaster";
 
 type LoginModalProps = {
   isOpen: boolean;
   onClose: () => void;
-  onSuccess?: (idToken: string) => void;
+  onSuccess?: (idToken: string, displayName: string | null) => void;
 };
 
 export function LoginModal({ isOpen, onClose, onSuccess }: LoginModalProps) {
   const { configured, signInWithGoogle } = useAuth();
-  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const modalRef = useRef<HTMLDivElement>(null);
 
@@ -33,20 +34,27 @@ export function LoginModal({ isOpen, onClose, onSuccess }: LoginModalProps) {
   if (!isOpen) return null;
 
   const handleGoogle = async () => {
-    setError("");
     setLoading(true);
     try {
       if (!configured) {
-        setError("Sign-in is not configured for this deployment.");
+        toaster.error(
+          "Sign-in is not configured for this deployment.",
+          <MdErrorOutline size={20} />,
+          "top-right",
+        );
         return;
       }
-      const token = await signInWithGoogle();
-      if (token) {
+      const result = await signInWithGoogle();
+      if (result?.token) {
         onClose();
-        onSuccess?.(token);
+        onSuccess?.(result.token, result.displayName);
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to sign in with Google");
+      toaster.error(
+        err instanceof Error ? err.message : "Failed to sign in with Google",
+        <MdErrorOutline size={20} />,
+        "top-right",
+      );
     } finally {
       setLoading(false);
     }
@@ -83,12 +91,6 @@ export function LoginModal({ isOpen, onClose, onSuccess }: LoginModalProps) {
             ? "Continue with Google so downloads can be tracked. Your email is stored for analytics only."
             : "Firebase Auth is not configured. Add env vars to enable Google sign-in."}
         </p>
-
-        {error ? (
-          <p className="mt-4 text-sm text-danger" role="alert">
-            {error}
-          </p>
-        ) : null}
 
         <Button
           className="mt-6 w-full"

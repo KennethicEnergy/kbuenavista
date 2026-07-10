@@ -15,12 +15,17 @@ export async function POST(request: NextRequest) {
     const site = getSite();
     const resumeUrl = `https://docs.google.com/document/d/${site.googleDocId}/export?format=pdf`;
 
-    await logResumeDownload({
-      uid: decoded.uid,
-      email: decoded.email,
-      displayName: decoded.name,
-      userAgent: request.headers.get("user-agent"),
-    });
+    try {
+      await logResumeDownload({
+        uid: decoded.uid,
+        email: decoded.email,
+        displayName: decoded.name,
+        userAgent: request.headers.get("user-agent"),
+      });
+    } catch (logError) {
+      // Don't block the download if analytics logging fails (e.g. Firestore not enabled yet).
+      console.error("Resume download log failed:", logError);
+    }
 
     return NextResponse.json({ url: resumeUrl });
   } catch (error) {
