@@ -1,108 +1,80 @@
-html,
-body {
-  max-width: 100vw;
-  overflow-x: hidden;
-}
+@import "tailwindcss";
 
-/* Default Dark Theme */
 :root {
-  --background-color: #171717;
-  --text-color: #ececec;
-
-  /* Animation timing variables for consistency */
+  --brand: #aaff00;
+  --bg-base: #0a1628;
+  --bg-surface: #111e33;
+  --bg-elevated: #1a2d4a;
+  --text-primary: #f0f4ff;
+  --text-muted: #7a90b0;
+  --success: #22c55e;
+  --warning: #f59e0b;
+  --danger: #ef4444;
   --transition-fast: 0.15s;
   --transition-normal: 0.25s;
-  --transition-slow: 0.4s;
-  --transition-slower: 0.6s;
-
-  /* Easing functions for smoother animations */
   --ease-out: cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  --ease-in: cubic-bezier(0.55, 0.055, 0.675, 0.19);
-  --ease-in-out: cubic-bezier(0.645, 0.045, 0.355, 1);
-  --ease-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
-  --ease-spring: cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-/* Dark Theme */
-[data-theme="dark"] {
-  --background-color: #171717;
-  --text-color: #ececec;
-}
-/* Light Theme
-[data-theme="light"] {
-  --background-color: #ececec;
-  --text-color: #171717;
-} */
-
-body {
-  font-family: var(--font-inter), system-ui, -apple-system, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  background-color: var(--background-color);
-  color: var(--text-color);
-  transition: background-color var(--transition-slow) var(--ease-in-out),
-              color var(--transition-slow) var(--ease-in-out);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
+@theme inline {
+  --color-brand: var(--brand);
+  --color-bg-base: var(--bg-base);
+  --color-bg-surface: var(--bg-surface);
+  --color-bg-elevated: var(--bg-elevated);
+  --color-text-primary: var(--text-primary);
+  --color-text-muted: var(--text-muted);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-danger: var(--danger);
+  --font-sans: var(--font-dm-sans);
+  --font-display: var(--font-syne);
 }
 
 * {
   box-sizing: border-box;
-  padding: 0;
-  margin: 0;
 }
 
-/* Focused transitions for interactive elements */
-a, button, [role="button"], input, textarea, select {
-  transition: color var(--transition-normal) var(--ease-out),
-              background-color var(--transition-normal) var(--ease-out),
-              transform var(--transition-normal) var(--ease-out),
-              box-shadow var(--transition-normal) var(--ease-out);
-}
-
-/* Improved link hover effects */
-a {
-  color: inherit;
-  text-decoration: none;
-  position: relative;
-}
-
-a:hover {
-  transform: translateY(-1px);
-}
-
-/* Smooth focus states */
-a:focus, button:focus, input:focus, textarea:focus, select:focus {
-  outline: 2px solid #007bff;
-  outline-offset: 2px;
-  transition: outline var(--transition-fast) var(--ease-out);
-}
-
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
-}
-
-h1, h2, h3, h4, h5, h6 {
-  margin: unset; /* override */
-}
-
-/* Smooth scrolling for better UX */
 html {
   scroll-behavior: smooth;
 }
 
-/* Improved selection styling */
-::selection {
-  background-color: rgba(0, 123, 255, 0.3);
-  color: inherit;
+body {
+  margin: 0;
+  min-height: 100vh;
+  background-color: var(--bg-base);
+  background-image:
+    radial-gradient(ellipse 80% 50% at 50% -20%, rgba(170, 255, 0, 0.08), transparent),
+    radial-gradient(ellipse 60% 40% at 100% 100%, rgba(26, 45, 74, 0.6), transparent);
+  color: var(--text-primary);
+  font-family: var(--font-dm-sans), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
 }
 
-::-moz-selection {
-  background-color: rgba(0, 123, 255, 0.3);
+::selection {
+  background-color: rgba(170, 255, 0, 0.25);
+  color: var(--text-primary);
+}
+
+a {
   color: inherit;
+  text-decoration: none;
+}
+
+:focus-visible {
+  outline: 2px solid var(--brand);
+  outline-offset: 2px;
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-up {
+  animation: fade-up 0.5s var(--ease-out) both;
 }
