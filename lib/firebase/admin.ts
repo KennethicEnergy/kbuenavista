@@ -2,6 +2,34 @@ import { initializeApp, getApps, cert, type ServiceAccount } from "firebase-admi
 import { getAuth } from "firebase-admin/auth";
 import { getFirestore } from "firebase-admin/firestore";
 
+function parseServiceAccount(raw: string): ServiceAccount {
+  const trimmed = raw.trim();
+
+  // Common cases: one-line JSON, or accidentally multiline / quoted JSON in env.
+  const candidates = [
+    trimmed,
+    trimmed.replace(/^['"]|['"]$/g, ""),
+  ];
+
+  // If value starts with "{" but is truncated/multiline-broken, try extracting object.
+  const objectMatch = trimmed.match(/\{[\s\S]*\}/);
+  if (objectMatch) {
+    candidates.push(objectMatch[0]);
+  }
+
+  for (const candidate of candidates) {
+    try {
+      return JSON.parse(candidate) as ServiceAccount;
+    } catch {
+      // try next
+    }
+  }
+
+  throw new Error(
+    "FIREBASE_SERVICE_ACCOUNT_KEY is invalid JSON. Paste the full key as one line in .env.local / Vercel.",
+  );
+}
+
 function getAdminApp() {
   if (getApps().length) {
     return getApps()[0]!;
@@ -14,15 +42,7 @@ function getAdminApp() {
     );
   }
 
-  let parsed: ServiceAccount;
-  try {
-    parsed = JSON.parse(serviceAccount) as ServiceAccount;
-  } catch {
-    throw new Error(
-      "FIREBASE_SERVICE_ACCOUNT_KEY is invalid JSON. Paste the full key as one line.",
-    );
-  }
-
+  const parsed = parseServiceAccount(serviceAccount);
   return initializeApp({ credential: cert(parsed) });
 }
 

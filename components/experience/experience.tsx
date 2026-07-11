@@ -53,7 +53,7 @@ export function Experience({ timeline, activities }: ExperienceProps) {
                   href={`/projects/${item.projectSlug}`}
                   className="flex items-center gap-2 text-sm font-medium text-brand underline-offset-4 hover:underline"
                 >
-                  View {item.projectName}
+                  <span className="hidden md:block">View {item.projectName}</span>
                   <CiImageOn size={24} />
                 </Link>
               ) : null}

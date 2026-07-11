@@ -33,7 +33,7 @@ export default async function ActivityPage({ params }: ActivityPageProps) {
   const images =
     activity.images && activity.images.length > 0
       ? activity.images
-      : ["/images/placeholders/about.jpg"];
+      : [""];
 
   return (
     <article className="py-16 animate-fade-up">

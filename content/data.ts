@@ -185,7 +185,6 @@ export const activitiesData: ActivityData[] = [
 		images: [
 			"/images/activities/conference.jpg",
 			"/images/activities/conference-2.jpg",
-			"/images/activities/conference-3.jpg",
 			"/images/activities/ng-my-logo.svg",
 		],
 		activitySlug: "ng-my-2019",
