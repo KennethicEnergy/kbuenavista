@@ -1,0 +1,12 @@
+---
+description: Never add Cursor/agent co-author trailers to git commits
+alwaysApply: true
+---
+
+# No Cursor agent in git commits
+
+Do **not** include Cursor, Cursor Agent, or `cursoragent@cursor.com` as a commit co-author.
+
+- Never add `Co-authored-by: Cursor <cursoragent@cursor.com>` (or any similar Cursor/agent trailer) to commit messages.
+- If a commit message is auto-injected with that trailer, remove it before pushing (amend only when the commit is still local and created in this session).
+- Commit messages should credit only the human author / repo owner.
