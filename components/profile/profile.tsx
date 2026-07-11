@@ -141,6 +141,84 @@ export function Profile({ site }: ProfileProps) {
     }
   };
 
+  const renderUser = () => (
+    <>
+      {user ? (
+        <div ref={menuRef} className="relative ml-1">
+          <button
+            type="button"
+            onClick={() => setMenuOpen((open) => !open)}
+            disabled={isDownloading}
+            aria-busy={isDownloading}
+            aria-expanded={menuOpen}
+            aria-haspopup="menu"
+            aria-label={`Account menu for ${user.displayName ?? "signed-in user"}`}
+            className="relative inline-flex size-10 shrink-0 items-center justify-center overflow-hidden rounded-full ring-2 ring-brand/50 transition hover:ring-brand disabled:cursor-not-allowed disabled:opacity-60"
+          >
+            {isDownloading ? (
+              <ImSpinner2 size={18} className="animate-spin text-brand" />
+            ) : user.photoURL ? (
+              <Image
+                src={user.photoURL}
+                alt=""
+                width={40}
+                height={40}
+                referrerPolicy="no-referrer"
+                unoptimized
+                className="size-full object-cover"
+              />
+            ) : (
+              <span className="flex size-full items-center justify-center bg-brand text-sm font-semibold text-bg-base">
+                {getFirstName(user.displayName).charAt(0).toUpperCase()}
+              </span>
+            )}
+          </button>
+
+          {menuOpen ? (
+            <div
+              role="menu"
+              className="absolute right-0 z-20 mt-2 min-w-44 overflow-hidden rounded-md border border-brand/20 bg-bg-surface py-1 shadow-lg"
+            >
+              <button
+                type="button"
+                role="menuitem"
+                onClick={handleDownload}
+                disabled={isDownloading}
+                className="flex w-full items-center gap-2 px-3 py-2 text-left text-sm text-text-primary transition-colors hover:bg-bg-elevated hover:text-brand disabled:opacity-50"
+              >
+                <MdFileDownload size={18} />
+                Download resume
+              </button>
+              <button
+                type="button"
+                role="menuitem"
+                onClick={handleSignOut}
+                className="flex w-full items-center gap-2 px-3 py-2 text-left text-sm text-text-muted transition-colors hover:bg-bg-elevated hover:text-brand"
+              >
+                <MdLogout size={18} />
+                Log out
+              </button>
+            </div>
+          ) : null}
+        </div>
+      ) : (
+        <Button
+          onClick={handleDownload}
+          disabled={isDownloading || !configured}
+          aria-busy={isDownloading}
+          aria-label={isDownloading ? "Preparing resume download" : "Download resume"}
+        >
+          {isDownloading ? (
+            <ImSpinner2 size={18} className="animate-spin" />
+          ) : (
+            <MdFileDownload size={18} />
+          )}
+        </Button>
+      )}
+
+    </>
+  )
+
   const handleSignOut = async () => {
     setMenuOpen(false);
     await signOut();
@@ -164,11 +242,14 @@ export function Profile({ site }: ProfileProps) {
       />
 
       <section className="flex flex-col items-start justify-between py-10 animate-fade-up md:py-12 lg:flex-row">
-        <div>
-          <h1 className="font-display text-4xl font-bold tracking-tight text-text-primary lg:text-7xl">
+        <div className="w-full">
+          <h1 className="font-display text-4xl font-bold tracking-tight text-text-primary lg:text-7xl flex items-center justify-between w-full">
             <Link href="/me" className="text-brand transition-colors hover:underline">
               {site.fullName}
             </Link>
+            <div className="lg:hidden">
+              {renderUser()}
+            </div>
           </h1>
           <p className="my-2 flex items-center gap-2 text-sm uppercase tracking-[0.2em]">
             <RiMapPin2Line size={18} /> {site.country}
@@ -176,7 +257,7 @@ export function Profile({ site }: ProfileProps) {
           <p className="mt-3 max-w-xl text-base text-text-muted">{site.introduction}</p>
         </div>
 
-        <div className="mt-5 flex flex-wrap items-start justify-end gap-1 lg:items-center">
+        <div className="mt-5 flex items-start justify-end gap-1 lg:items-center">
           <Link
             href={site.githubUrl}
             target="_blank"
@@ -195,78 +276,9 @@ export function Profile({ site }: ProfileProps) {
           >
             <IoLogoLinkedin size={24} />
           </Link>
-          {user ? (
-            <div ref={menuRef} className="relative ml-1">
-              <button
-                type="button"
-                onClick={() => setMenuOpen((open) => !open)}
-                disabled={isDownloading}
-                aria-busy={isDownloading}
-                aria-expanded={menuOpen}
-                aria-haspopup="menu"
-                aria-label={`Account menu for ${user.displayName ?? "signed-in user"}`}
-                className="relative inline-flex size-10 shrink-0 items-center justify-center overflow-hidden rounded-full ring-2 ring-brand/50 transition hover:ring-brand disabled:cursor-not-allowed disabled:opacity-60"
-              >
-                {isDownloading ? (
-                  <ImSpinner2 size={18} className="animate-spin text-brand" />
-                ) : user.photoURL ? (
-                  <Image
-                    src={user.photoURL}
-                    alt=""
-                    width={40}
-                    height={40}
-                    referrerPolicy="no-referrer"
-                    unoptimized
-                    className="size-full object-cover"
-                  />
-                ) : (
-                  <span className="flex size-full items-center justify-center bg-brand text-sm font-semibold text-bg-base">
-                    {getFirstName(user.displayName).charAt(0).toUpperCase()}
-                  </span>
-                )}
-              </button>
-
-              {menuOpen ? (
-                <div
-                  role="menu"
-                  className="absolute right-0 z-20 mt-2 min-w-44 overflow-hidden rounded-md border border-brand/20 bg-bg-surface py-1 shadow-lg"
-                >
-                  <button
-                    type="button"
-                    role="menuitem"
-                    onClick={handleDownload}
-                    disabled={isDownloading}
-                    className="flex w-full items-center gap-2 px-3 py-2 text-left text-sm text-text-primary transition-colors hover:bg-bg-elevated hover:text-brand disabled:opacity-50"
-                  >
-                    <MdFileDownload size={18} />
-                    Download resume
-                  </button>
-                  <button
-                    type="button"
-                    role="menuitem"
-                    onClick={handleSignOut}
-                    className="flex w-full items-center gap-2 px-3 py-2 text-left text-sm text-text-muted transition-colors hover:bg-bg-elevated hover:text-brand"
-                  >
-                    <MdLogout size={18} />
-                    Log out
-                  </button>
-                </div>
-              ) : null}
-            </div>
-          ) : (
-            <Button
-              onClick={handleDownload}
-              disabled={isDownloading || !configured}
-              aria-busy={isDownloading}
-              aria-label={isDownloading ? "Preparing resume download" : "Download resume"}
-            >
-              {isDownloading ? (
-                <ImSpinner2 size={18} className="animate-spin" />
-              ) : (
-                <MdFileDownload size={18} />
-              )}
-            </Button>
-          )}
+          <div className="hidden lg:block">
+            {renderUser()}
+          </div>
         </div>
       </section>
     </>
