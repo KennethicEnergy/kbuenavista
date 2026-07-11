@@ -19,7 +19,14 @@ function parseServiceAccount(raw: string): ServiceAccount {
 
   for (const candidate of candidates) {
     try {
-      return JSON.parse(candidate) as ServiceAccount;
+      const parsed = JSON.parse(candidate) as ServiceAccount & {
+        private_key?: string;
+      };
+      // Vercel / double-escaped env sometimes leaves literal \n in the PEM.
+      if (typeof parsed.private_key === "string") {
+        parsed.private_key = parsed.private_key.replace(/\\n/g, "\n");
+      }
+      return parsed;
     } catch {
       // try next
     }

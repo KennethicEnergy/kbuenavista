@@ -2,6 +2,17 @@ import { NextRequest, NextResponse } from "next/server";
 import { getSite } from "@/lib/content";
 import { logResumeDownload, verifyIdToken } from "@/lib/firebase/admin";
 
+export const runtime = "nodejs";
+
+function isConfigError(message: string) {
+  return (
+    message.includes("FIREBASE_SERVICE_ACCOUNT_KEY") ||
+    message.includes("Failed to parse private key") ||
+    message.includes("error:1E08010C") ||
+    message.includes("credential")
+  );
+}
+
 export async function POST(request: NextRequest) {
   try {
     const authHeader = request.headers.get("authorization");
@@ -31,13 +42,22 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     const message = error instanceof Error ? error.message : "Unknown error";
     console.error("Resume download error:", message, error);
-    const isDev = process.env.NODE_ENV === "development";
+
+    if (isConfigError(message)) {
+      return NextResponse.json(
+        {
+          error: "Server misconfigured",
+          details:
+            "FIREBASE_SERVICE_ACCOUNT_KEY is missing or invalid on this host. Set it as one-line JSON in Vercel env and redeploy.",
+        },
+        { status: 500 },
+      );
+    }
+
     return NextResponse.json(
       {
         error: "Unauthorized",
-        details: isDev
-          ? message
-          : "Token verification failed. Check Firebase Admin configuration.",
+        details: "Token verification failed. Check Firebase Admin configuration.",
       },
       { status: 401 },
     );
