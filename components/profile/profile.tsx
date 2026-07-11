@@ -1,10 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useEffectEvent, useRef, useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { BiLogoGithub } from "react-icons/bi";
 import { IoLogoLinkedin } from "react-icons/io";
-import { MdErrorOutline, MdFileDownload, MdWarningAmber } from "react-icons/md";
+import { MdErrorOutline, MdFileDownload, MdLogout, MdWarningAmber } from "react-icons/md";
 import { ImSpinner2 } from "react-icons/im";
 import { RiMapPin2Line } from "react-icons/ri";
 import { Button } from "@/components/ui/button";
@@ -48,12 +49,22 @@ function getFirstName(displayName: string | null | undefined) {
   return trimmed.split(/\s+/)[0] ?? "there";
 }
 
+function notifyDownloadError() {
+  toaster.error(
+    "Could not download resume. Please try again.",
+    <MdErrorOutline size={20} />,
+    "top-right",
+  );
+}
+
 export function Profile({ site }: ProfileProps) {
-  const { user, getIdToken, configured } = useAuth();
+  const { user, getIdToken, configured, signOut } = useAuth();
   const [showLogin, setShowLogin] = useState(false);
   const [showThanks, setShowThanks] = useState(false);
   const [thanksName, setThanksName] = useState("there");
   const [isDownloading, setIsDownloading] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
 
   const performDownload = async (token: string, displayName?: string | null) => {
     setIsDownloading(true);
@@ -67,26 +78,45 @@ export function Profile({ site }: ProfileProps) {
     }
   };
 
+  const resumePendingDownload = useEffectEvent(() => {
+    void (async () => {
+      try {
+        const token = await getIdToken();
+        if (!token || !user) return;
+        await performDownload(token, user.displayName);
+      } catch {
+        notifyDownloadError();
+      }
+    })();
+  });
+
   useEffect(() => {
     if (!user) return;
     if (typeof sessionStorage === "undefined") return;
     if (sessionStorage.getItem(PENDING_DOWNLOAD_KEY) !== "1") return;
     sessionStorage.removeItem(PENDING_DOWNLOAD_KEY);
-    setIsDownloading(true);
-    getIdToken()
-      .then((token) => {
-        if (token) return performDownload(token, user.displayName);
-        setIsDownloading(false);
-      })
-      .catch(() => {
-        setIsDownloading(false);
-        toaster.error(
-          "Could not download resume. Please try again.",
-          <MdErrorOutline size={20} />,
-          "top-right",
-        );
-      });
-  }, [user, getIdToken]);
+    resumePendingDownload();
+  }, [user]);
+
+  useEffect(() => {
+    if (!menuOpen) return;
+
+    const onPointerDown = (event: PointerEvent) => {
+      if (!menuRef.current?.contains(event.target as Node)) {
+        setMenuOpen(false);
+      }
+    };
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setMenuOpen(false);
+    };
+
+    document.addEventListener("pointerdown", onPointerDown);
+    document.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.removeEventListener("pointerdown", onPointerDown);
+      document.removeEventListener("keydown", onKeyDown);
+    };
+  }, [menuOpen]);
 
   const handleDownload = async () => {
     if (!configured) {
@@ -101,17 +131,19 @@ export function Profile({ site }: ProfileProps) {
       setShowLogin(true);
       return;
     }
+    setMenuOpen(false);
     try {
       const token = await getIdToken();
       if (!token) throw new Error("Not authenticated");
       await performDownload(token, user.displayName);
     } catch {
-      toaster.error(
-        "Could not download resume. Please try again.",
-        <MdErrorOutline size={20} />,
-        "top-right",
-      );
+      notifyDownloadError();
     }
+  };
+
+  const handleSignOut = async () => {
+    setMenuOpen(false);
+    await signOut();
   };
 
   return (
@@ -120,13 +152,7 @@ export function Profile({ site }: ProfileProps) {
         isOpen={showLogin}
         onClose={() => setShowLogin(false)}
         onSuccess={(token, displayName) => {
-          performDownload(token, displayName).catch(() =>
-            toaster.error(
-              "Could not download resume. Please try again.",
-              <MdErrorOutline size={20} />,
-              "top-right",
-            ),
-          );
+          performDownload(token, displayName).catch(notifyDownloadError);
         }}
       />
       <ThankYouModal
@@ -169,18 +195,78 @@ export function Profile({ site }: ProfileProps) {
           >
             <IoLogoLinkedin size={24} />
           </Link>
-          <Button
-            onClick={handleDownload}
-            disabled={isDownloading || (!configured && !user)}
-            aria-busy={isDownloading}
-            aria-label={isDownloading ? "Preparing resume download" : "Download resume"}
-          >
-            {isDownloading ? (
-              <ImSpinner2 size={18} className="animate-spin" />
-            ) : (
-              <MdFileDownload size={18} />
-            )}
-          </Button>
+          {user ? (
+            <div ref={menuRef} className="relative ml-1">
+              <button
+                type="button"
+                onClick={() => setMenuOpen((open) => !open)}
+                disabled={isDownloading}
+                aria-busy={isDownloading}
+                aria-expanded={menuOpen}
+                aria-haspopup="menu"
+                aria-label={`Account menu for ${user.displayName ?? "signed-in user"}`}
+                className="relative inline-flex size-10 shrink-0 items-center justify-center overflow-hidden rounded-full ring-2 ring-brand/50 transition hover:ring-brand disabled:cursor-not-allowed disabled:opacity-60"
+              >
+                {isDownloading ? (
+                  <ImSpinner2 size={18} className="animate-spin text-brand" />
+                ) : user.photoURL ? (
+                  <Image
+                    src={user.photoURL}
+                    alt=""
+                    width={40}
+                    height={40}
+                    referrerPolicy="no-referrer"
+                    unoptimized
+                    className="size-full object-cover"
+                  />
+                ) : (
+                  <span className="flex size-full items-center justify-center bg-brand text-sm font-semibold text-bg-base">
+                    {getFirstName(user.displayName).charAt(0).toUpperCase()}
+                  </span>
+                )}
+              </button>
+
+              {menuOpen ? (
+                <div
+                  role="menu"
+                  className="absolute right-0 z-20 mt-2 min-w-44 overflow-hidden rounded-md border border-brand/20 bg-bg-surface py-1 shadow-lg"
+                >
+                  <button
+                    type="button"
+                    role="menuitem"
+                    onClick={handleDownload}
+                    disabled={isDownloading}
+                    className="flex w-full items-center gap-2 px-3 py-2 text-left text-sm text-text-primary transition-colors hover:bg-bg-elevated hover:text-brand disabled:opacity-50"
+                  >
+                    <MdFileDownload size={18} />
+                    Download resume
+                  </button>
+                  <button
+                    type="button"
+                    role="menuitem"
+                    onClick={handleSignOut}
+                    className="flex w-full items-center gap-2 px-3 py-2 text-left text-sm text-text-muted transition-colors hover:bg-bg-elevated hover:text-brand"
+                  >
+                    <MdLogout size={18} />
+                    Log out
+                  </button>
+                </div>
+              ) : null}
+            </div>
+          ) : (
+            <Button
+              onClick={handleDownload}
+              disabled={isDownloading || !configured}
+              aria-busy={isDownloading}
+              aria-label={isDownloading ? "Preparing resume download" : "Download resume"}
+            >
+              {isDownloading ? (
+                <ImSpinner2 size={18} className="animate-spin" />
+              ) : (
+                <MdFileDownload size={18} />
+              )}
+            </Button>
+          )}
         </div>
       </section>
     </>

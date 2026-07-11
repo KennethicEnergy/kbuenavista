@@ -12,6 +12,9 @@ import {
 } from "firebase/auth";
 import { getFirebaseAuth, isFirebaseConfigured } from "@/lib/firebase/client";
 
+const IDLE_TIMEOUT_MS = 10 * 60 * 1000;
+const ACTIVITY_EVENTS = ["pointerdown", "keydown", "scroll", "touchstart"] as const;
+
 type AuthContextValue = {
   user: User | null;
   loading: boolean;
@@ -45,6 +48,35 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     return unsubscribe;
   }, [configured]);
+
+  useEffect(() => {
+    if (!user) return;
+
+    let timeoutId: ReturnType<typeof setTimeout>;
+
+    const signOutIdle = () => {
+      const auth = getFirebaseAuth();
+      if (!auth) return;
+      void firebaseSignOut(auth);
+    };
+
+    const resetIdleTimer = () => {
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(signOutIdle, IDLE_TIMEOUT_MS);
+    };
+
+    resetIdleTimer();
+    for (const event of ACTIVITY_EVENTS) {
+      window.addEventListener(event, resetIdleTimer, { passive: true });
+    }
+
+    return () => {
+      clearTimeout(timeoutId);
+      for (const event of ACTIVITY_EVENTS) {
+        window.removeEventListener(event, resetIdleTimer);
+      }
+    };
+  }, [user]);
 
   const value = useMemo<AuthContextValue>(
     () => ({
