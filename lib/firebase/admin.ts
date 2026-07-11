@@ -1,17 +1,14 @@
 import { initializeApp, getApps, cert, type ServiceAccount } from "firebase-admin/app";
-import { getAuth } from "firebase-admin/auth";
 import { getFirestore } from "firebase-admin/firestore";
 
 function parseServiceAccount(raw: string): ServiceAccount {
   const trimmed = raw.trim();
 
-  // Common cases: one-line JSON, or accidentally multiline / quoted JSON in env.
   const candidates = [
     trimmed,
     trimmed.replace(/^['"]|['"]$/g, ""),
   ];
 
-  // If value starts with "{" but is truncated/multiline-broken, try extracting object.
   const objectMatch = trimmed.match(/\{[\s\S]*\}/);
   if (objectMatch) {
     candidates.push(objectMatch[0]);
@@ -20,12 +17,10 @@ function parseServiceAccount(raw: string): ServiceAccount {
   for (const candidate of candidates) {
     try {
       let parsed: unknown = JSON.parse(candidate);
-      // Handle double-encoded JSON (e.g. "\"{...}\"" from some env UIs).
       if (typeof parsed === "string") {
         parsed = JSON.parse(parsed);
       }
       const account = parsed as ServiceAccount & { private_key?: string };
-      // Vercel / double-escaped env sometimes leaves literal \n in the PEM.
       if (typeof account.private_key === "string") {
         account.private_key = account.private_key.replace(/\\n/g, "\n");
       }
@@ -54,11 +49,6 @@ function getAdminApp() {
 
   const parsed = parseServiceAccount(serviceAccount);
   return initializeApp({ credential: cert(parsed) });
-}
-
-export async function verifyIdToken(token: string) {
-  getAdminApp();
-  return getAuth().verifyIdToken(token);
 }
 
 export async function logResumeDownload(entry: {

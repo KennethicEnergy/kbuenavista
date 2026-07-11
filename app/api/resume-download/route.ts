@@ -1,17 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getSite } from "@/lib/content";
-import { logResumeDownload, verifyIdToken } from "@/lib/firebase/admin";
+import { verifyIdToken } from "@/lib/firebase/verify-token";
 
 export const runtime = "nodejs";
-
-function isConfigError(message: string) {
-  return (
-    message.includes("FIREBASE_SERVICE_ACCOUNT_KEY") ||
-    message.includes("Failed to parse private key") ||
-    message.includes("error:1E08010C") ||
-    message.includes("credential")
-  );
-}
 
 export async function POST(request: NextRequest) {
   try {
@@ -26,7 +17,10 @@ export async function POST(request: NextRequest) {
     const site = getSite();
     const resumeUrl = `https://docs.google.com/document/d/${site.googleDocId}/export?format=pdf`;
 
+    // Optional analytics — Admin SDK is loaded only here so verify/download
+    // still works if firebase-admin fails on Vercel.
     try {
+      const { logResumeDownload } = await import("@/lib/firebase/admin");
       await logResumeDownload({
         uid: decoded.uid,
         email: decoded.email,
@@ -34,7 +28,6 @@ export async function POST(request: NextRequest) {
         userAgent: request.headers.get("user-agent"),
       });
     } catch (logError) {
-      // Don't block the download if analytics logging fails (e.g. Firestore not enabled yet).
       console.error("Resume download log failed:", logError);
     }
 
@@ -43,21 +36,10 @@ export async function POST(request: NextRequest) {
     const message = error instanceof Error ? error.message : "Unknown error";
     console.error("Resume download error:", message, error);
 
-    if (isConfigError(message)) {
-      return NextResponse.json(
-        {
-          error: "Server misconfigured",
-          details:
-            "FIREBASE_SERVICE_ACCOUNT_KEY is missing or invalid on this host. Set it as one-line JSON in Vercel env and redeploy.",
-        },
-        { status: 500 },
-      );
-    }
-
     return NextResponse.json(
       {
         error: "Unauthorized",
-        details: "Token verification failed. Check Firebase Admin configuration.",
+        details: "Token verification failed. Check Firebase configuration.",
       },
       { status: 401 },
     );
