@@ -1,8 +1,5 @@
 import { ImageResponse } from "next/og";
-import {
-  getRotatingTagline,
-  OG_TAGLINE_INTERVAL_SECONDS,
-} from "@/lib/og-taglines";
+import { getRotatingTagline } from "@/lib/og-taglines";
 
 export const alt = "Kenneth Buenavista — Senior Frontend Developer";
 export const size = {
@@ -10,7 +7,8 @@ export const size = {
   height: 630,
 };
 export const contentType = "image/png";
-export const revalidate = OG_TAGLINE_INTERVAL_SECONDS;
+/** Must be a literal for Next.js segment config analysis. Keep in sync with introductionIntervalSeconds. */
+export const revalidate = 8;
 
 export default function TwitterImage() {
   const tagline = getRotatingTagline();
