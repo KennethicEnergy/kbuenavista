@@ -4,7 +4,7 @@ import { ActivityData, TimelineData } from "./types";
 export const timelineData: TimelineData[] = [
 	{
 		id: 1,
-		title: "Internship",
+		title: "Intern",
 		company: "98Labs Inc.",
 		companyUrl: "https://98labs.com",
 		date: "November 2016 - April 2017",
@@ -142,15 +142,46 @@ Delivers proposals and guides customers through the application process without 
     ]
 	},
   {
-		id: 8,
+    id: 8,
+    title: "Home Owner/Gardener/Welder/Fur Dad",
+    company: "On Break",
+    companyUrl: null,
+    date: "October 2025 - April 2026",
+    description:
+      "Took a planned career break after completing my previous role to focus on personal projects, home improvement, and recharging. During this time, I managed my newly turned-over home, learned practical skills such as basic welding and DIY repairs, maintained the property and garden, cared for my dogs, and continued sharpening my frontend development skills by exploring modern web technologies and building personal projects.",
+    projectSlug: null,
+    projectImages: null,
+    projectGif: null,
+    projectName: "Career Break",
+    projectDescription:
+      "A six-month career break dedicated to home ownership, personal development, hands-on DIY projects, continuous learning, and preparing for the next opportunity.",
+    projectTechStack: [
+      "DIY",
+      "Home Improvement",
+      "Gardening",
+      "Welding",
+      "Carpentry",
+      "Learning",
+      "Frontend Development"
+    ]
+  },
+  {
+		id: 9,
 		title: "Senior Front-End Web Developer",
 		company: "Webzoid System Solutions Corporation",
 		companyUrl: "https://www.webzoid.com",
 		date: "April 2026 - Present",
 		description: "As the sole frontend developer, I architected and built WOWGames — a full-scale online casino platform — from the ground up using Next.js and React. I own the entire frontend: app routing, authentication flows, real-time features via WebSockets, game launcher integration, sportsbook and tournament modules, community forums, promotions, VIP account pages, and responsive UI across all breakpoints. I integrated REST APIs with TanStack Query, managed client state with Zustand, implemented form validation with Formik and Zod, and delivered animated interactions with Motion. Working independently, I made architectural decisions, established component patterns, and shipped production-ready features end to end.",
-		projectSlug: null,
-		projectImages: null,
-		projectGif: null,
+		projectSlug: "wowgames",
+		projectImages: [
+      "/images/projects/wowgames-1.png",
+      "/images/projects/wowgames-2.png",
+      "/images/projects/wowgames-3.png",
+      "/images/projects/wowgames-4.png",
+      "/images/projects/wowgames-5.png",
+      "/images/projects/wowgames-7.png",
+    ],
+		projectGif: "/images/project-gifs/wowgames.gif",
 		projectName: "WOWGames",
 		projectDescription: `WOWGames is a full-featured online casino platform built solo with Next.js and React. It includes a game lobby and launcher, sportsbook, tournaments, promotions, referral program, VIP and profile account pages, customer service, and a community forum — all with real-time updates, authenticated user flows, and a responsive Tailwind CSS interface.`,
 		projectTechStack: [
@@ -187,6 +218,7 @@ export const activitiesData: ActivityData[] = [
 			"/images/activities/conference-2.jpg",
 			"/images/activities/ng-my-logo.svg",
 		],
+		videoUrl: "https://www.youtube.com/embed/GpckCAcAgMk",
 		activitySlug: "ng-my-2019",
 	},
 ];

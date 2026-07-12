@@ -7,6 +7,8 @@ export type ActivityData = {
   location: string | null;
   description: string;
   images: string[] | null;
+  /** YouTube (or other) embed URL for the activity detail page */
+  videoUrl: string | null;
   /** Clean slug for `/activities/[slug]`, or null when no activity page */
   activitySlug: string | null;
 };
