@@ -1,5 +1,6 @@
 "use client";
 
+import type { ReactNode } from "react";
 import Marquee from "react-fast-marquee";
 import {
   BiLogoAngular,
@@ -51,22 +52,29 @@ const icons = [
   { icon: SiGoogleanalytics, label: "Analytics" },
 ];
 
-export function Skills() {
+type SkillsProps = {
+  children?: ReactNode;
+};
+
+export function Skills({ children }: SkillsProps) {
   return (
     <Section title="What I work with" subtitle="Tools and technologies across the stack.">
-      <div className="rounded-xl border border-bg-elevated bg-bg-surface/60 py-6">
-        <Marquee gradient={false} speed={40} pauseOnHover>
-          {icons.map(({ icon: Icon, label }) => (
-            <div
-              key={label}
-              className="mx-6 flex flex-col items-center gap-2 text-text-muted transition-colors hover:text-brand"
-              title={label}
-            >
-              <Icon size={28} aria-hidden />
-              <span className="text-xs">{label}</span>
-            </div>
-          ))}
-        </Marquee>
+      <div className="overflow-hidden rounded-xl border border-bg-elevated bg-bg-surface/60">
+        <div className="py-6">
+          <Marquee gradient={false} speed={40} pauseOnHover>
+            {icons.map(({ icon: Icon, label }) => (
+              <div
+                key={label}
+                className="mx-6 flex flex-col items-center gap-2 text-text-muted transition-colors hover:text-brand"
+                title={label}
+              >
+                <Icon size={28} aria-hidden />
+                <span className="text-xs">{label}</span>
+              </div>
+            ))}
+          </Marquee>
+        </div>
+        {children}
       </div>
     </Section>
   );
