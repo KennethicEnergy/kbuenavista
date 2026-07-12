@@ -78,6 +78,19 @@ export default async function ActivityPage({ params }: ActivityPageProps) {
       </div>
       <p className="mt-6 max-w-3xl text-text-muted">{activity.description}</p>
 
+      {activity.videoUrl ? (
+        <div className="mt-10 aspect-video w-full overflow-hidden">
+          <iframe
+            src={activity.videoUrl}
+            title="#ngMY2019 Highlights"
+            className="size-full border-0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerPolicy="strict-origin-when-cross-origin"
+            allowFullScreen
+          />
+        </div>
+      ) : null}
+
       <div className="mt-10 grid gap-4 sm:grid-cols-2">
         {images
           .filter(item => item !== "/images/activities/ng-my-logo.svg")
