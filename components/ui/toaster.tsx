@@ -46,7 +46,7 @@ function ToastItem({ toast }: { toast: Toast }) {
       role="status"
       aria-live="polite"
       className={cn(
-        "pointer-events-auto flex w-[min(100vw-2rem,22rem)] items-start gap-3 rounded-md border border-solid px-4 py-3 shadow-lg animate-fade-up",
+        "pointer-events-auto flex w-toast items-start gap-3 rounded-md border border-solid px-4 py-3 shadow-lg animate-fade-up",
         typeClass[toast.type],
       )}
     >
@@ -79,7 +79,7 @@ export function Toaster() {
           key={position}
           aria-label="Notifications"
           className={cn(
-            "pointer-events-none fixed z-[100] flex max-h-screen flex-col gap-2",
+            "pointer-events-none fixed z-toast flex max-h-screen flex-col gap-2",
             positionClass[position],
           )}
         >
