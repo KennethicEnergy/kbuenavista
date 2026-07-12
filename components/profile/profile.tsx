@@ -12,6 +12,7 @@ import { Button } from "@/components/ui/button";
 import { LoginModal } from "@/components/auth/login-modal";
 import { ThankYouModal } from "@/components/auth/thank-you-modal";
 import { useAuth } from "@/components/auth/auth-provider";
+import { RotatingIntroduction } from "@/components/ui/rotating-introduction";
 import { toaster } from "@/lib/toaster";
 import {
   consumePendingResumeDownload,
@@ -247,7 +248,11 @@ export function Profile({ site }: ProfileProps) {
           <p className="my-2 flex items-center gap-2 text-sm uppercase tracking-section">
             <RiMapPin2Line size={18} /> {site.country}
           </p>
-          <p className="mt-3 max-w-xl text-base text-text-muted">{site.introduction}</p>
+          <RotatingIntroduction
+            lines={site.introductions}
+            intervalSeconds={site.introductionIntervalSeconds}
+            className="mt-3 max-w-xl text-base text-text-muted"
+          />
         </div>
 
         <div className="mt-5 flex items-start justify-end gap-1 lg:items-center">

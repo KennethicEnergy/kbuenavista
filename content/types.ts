@@ -31,7 +31,11 @@ export type TimelineData = {
 
 export type SiteContentBase = {
   fullName: string;
+  /** Default / first introduction line */
   introduction: string;
+  /** Rotating introduction lines for the live site and OG images */
+  introductions: string[];
+  introductionIntervalSeconds: number;
   country: string;
   githubUrl: string;
   linkedinUrl: string;
