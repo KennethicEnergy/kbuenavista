@@ -13,22 +13,22 @@ const metrics: {
   label: string;
   icon: ReactNode;
 }[] = [
-  {
-    key: "total",
-    label: "Total Download CV",
-    icon: <MdFileDownload size={22} aria-hidden />,
-  },
-  {
-    key: "uniqueDownloaders",
-    label: "Unique downloaders",
-    icon: <HiOutlineUsers size={22} aria-hidden />,
-  },
-  {
-    key: "downloadsToday",
-    label: "Downloads today",
-    icon: <MdToday size={22} aria-hidden />,
-  },
-];
+    {
+      key: "total",
+      label: "Total Download CV",
+      icon: <MdFileDownload size={22} aria-hidden />,
+    },
+    {
+      key: "uniqueDownloaders",
+      label: "Unique downloaders",
+      icon: <HiOutlineUsers size={22} aria-hidden />,
+    },
+    {
+      key: "downloadsToday",
+      label: "Downloads today",
+      icon: <MdToday size={22} aria-hidden />,
+    },
+  ];
 
 export function VisitorsData({
   total,
@@ -59,10 +59,10 @@ export function VisitorsData({
               {metric.icon}
             </div>
             <div className="min-w-0">
-              <p className="font-display text-2xl font-semibold tabular-nums text-text-primary">
+              <p className="font-display text-2xl font-semibold tabular-nums text-text-primary flex gap-2 items-center">
                 {values[metric.key]}
+                <span className="text-sm text-text-muted">{metric.label}</span>
               </p>
-              <p className="mt-0.5 text-sm text-text-muted">{metric.label}</p>
             </div>
           </li>
         ))}
