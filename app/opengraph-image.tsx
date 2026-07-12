@@ -1,4 +1,8 @@
 import { ImageResponse } from "next/og";
+import {
+  getRotatingTagline,
+  OG_TAGLINE_INTERVAL_SECONDS,
+} from "@/lib/og-taglines";
 
 export const alt = "Kenneth Buenavista — Senior Frontend Developer";
 export const size = {
@@ -6,8 +10,11 @@ export const size = {
   height: 630,
 };
 export const contentType = "image/png";
+export const revalidate = OG_TAGLINE_INTERVAL_SECONDS;
 
 export default function OpenGraphImage() {
+  const tagline = getRotatingTagline();
+
   return new ImageResponse(
     (
       <div
@@ -58,7 +65,7 @@ export default function OpenGraphImage() {
             Senior Frontend Developer — React, Next.js, TypeScript
           </div>
           <div style={{ color: "#7a90b0", fontSize: 26 }}>
-            I create beautiful websites your users will love.
+            {tagline}
           </div>
         </div>
 

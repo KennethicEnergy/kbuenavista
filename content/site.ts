@@ -1,8 +1,21 @@
 import type { SiteContentBase } from "./types";
 
+export const introductions = [
+  "I create beautiful websites your users will love.",
+  "I build fast, modern web experiences that just work.",
+  "I turn complex ideas into intuitive user interfaces.",
+  "I transform designs into pixel-perfect experiences.",
+  "I build scalable frontend applications with clean, maintainable code.",
+] as const;
+
+/** How often the live intro and OG taglines advance (seconds). */
+export const introductionIntervalSeconds = 8;
+
 export const site: SiteContentBase = {
   fullName: "Kenneth Buenavista",
-  introduction: "I create beautiful websites your users will love.",
+  introduction: introductions[0],
+  introductions: [...introductions],
+  introductionIntervalSeconds,
   country: "Philippines",
   githubUrl: "https://github.com/KennethicEnergy",
   linkedinUrl: "https://www.linkedin.com/in/ken-buenavista-94a736144/",
