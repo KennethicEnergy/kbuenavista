@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useEffectEvent, useRef, useState } from "react";
+import { useEffect, useEffectEvent, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { BiLogoGithub } from "react-icons/bi";
@@ -13,9 +13,12 @@ import { LoginModal } from "@/components/auth/login-modal";
 import { ThankYouModal } from "@/components/auth/thank-you-modal";
 import { useAuth } from "@/components/auth/auth-provider";
 import { toaster } from "@/lib/toaster";
+import {
+  consumePendingResumeDownload,
+  isMobileClient,
+  openResumeUrl,
+} from "@/lib/resume-gate";
 import type { SiteContent } from "@/content/types";
-
-const PENDING_DOWNLOAD_KEY = "resumeDownloadAfterAuth";
 
 type ProfileProps = {
   site: SiteContent;
@@ -31,16 +34,6 @@ async function requestResumeUrl(token: string) {
     throw new Error(data.details || data.error || "Failed to get download link");
   }
   return data.url;
-}
-
-function openUrl(url: string) {
-  const link = document.createElement("a");
-  link.href = url;
-  link.target = "_blank";
-  link.rel = "noopener noreferrer";
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
 }
 
 function getFirstName(displayName: string | null | undefined) {
@@ -64,15 +57,16 @@ export function Profile({ site }: ProfileProps) {
   const [thanksName, setThanksName] = useState("there");
   const [isDownloading, setIsDownloading] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-  const menuRef = useRef<HTMLDivElement>(null);
 
   const performDownload = async (token: string, displayName?: string | null) => {
     setIsDownloading(true);
     try {
       const url = await requestResumeUrl(token);
-      openUrl(url);
-      setThanksName(getFirstName(displayName ?? user?.displayName));
-      setShowThanks(true);
+      openResumeUrl(url);
+      if (!isMobileClient()) {
+        setThanksName(getFirstName(displayName ?? user?.displayName));
+        setShowThanks(true);
+      }
     } finally {
       setIsDownloading(false);
     }
@@ -92,9 +86,7 @@ export function Profile({ site }: ProfileProps) {
 
   useEffect(() => {
     if (!user) return;
-    if (typeof sessionStorage === "undefined") return;
-    if (sessionStorage.getItem(PENDING_DOWNLOAD_KEY) !== "1") return;
-    sessionStorage.removeItem(PENDING_DOWNLOAD_KEY);
+    if (!consumePendingResumeDownload()) return;
     resumePendingDownload();
   }, [user]);
 
@@ -102,9 +94,10 @@ export function Profile({ site }: ProfileProps) {
     if (!menuOpen) return;
 
     const onPointerDown = (event: PointerEvent) => {
-      if (!menuRef.current?.contains(event.target as Node)) {
-        setMenuOpen(false);
-      }
+      const target = event.target;
+      if (!(target instanceof Element)) return;
+      if (target.closest("[data-account-menu]")) return;
+      setMenuOpen(false);
     };
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") setMenuOpen(false);
@@ -144,7 +137,7 @@ export function Profile({ site }: ProfileProps) {
   const renderUser = () => (
     <>
       {user ? (
-        <div ref={menuRef} className="relative ml-1">
+        <div data-account-menu className="relative z-30 ml-1">
           <button
             type="button"
             onClick={() => setMenuOpen((open) => !open)}
@@ -177,7 +170,7 @@ export function Profile({ site }: ProfileProps) {
           {menuOpen ? (
             <div
               role="menu"
-              className="absolute right-0 z-20 mt-2 min-w-44 overflow-hidden rounded-md border border-brand/20 bg-bg-surface py-1 shadow-lg"
+              className="absolute right-0 z-50 mt-2 min-w-44 overflow-hidden rounded-md border border-brand/20 bg-bg-surface py-1 shadow-lg"
             >
               <button
                 type="button"
@@ -243,15 +236,15 @@ export function Profile({ site }: ProfileProps) {
 
       <section className="flex flex-col items-start justify-between py-10 animate-fade-up md:py-12 lg:flex-row">
         <div className="w-full">
-          <h1 className="font-display text-4xl font-bold tracking-tight text-text-primary lg:text-7xl flex items-center justify-between w-full">
-            <Link href="/me" className="text-brand transition-colors hover:underline">
-              {site.fullName}
-            </Link>
-            <div className="lg:hidden">
-              {renderUser()}
-            </div>
-          </h1>
-          <p className="my-2 flex items-center gap-2 text-sm uppercase tracking-[0.2em]">
+          <div className="flex w-full items-center justify-between gap-3">
+            <h1 className="font-display text-4xl font-bold tracking-tight text-text-primary lg:text-7xl">
+              <Link href="/me" className="text-brand transition-colors hover:underline">
+                {site.fullName}
+              </Link>
+            </h1>
+            <div className="lg:hidden">{renderUser()}</div>
+          </div>
+          <p className="my-2 flex items-center gap-2 text-sm uppercase tracking-section">
             <RiMapPin2Line size={18} /> {site.country}
           </p>
           <p className="mt-3 max-w-xl text-base text-text-muted">{site.introduction}</p>
