@@ -32,7 +32,7 @@ export default function AboutPage() {
           >
             ←
           </Link>
-          <p className="text-sm uppercase tracking-[0.2em] text-brand">About</p>
+          <p className="text-sm uppercase tracking-section text-brand">About</p>
         </div>
         <h1 className="mt-3 font-display text-4xl font-bold text-brand md:text-5xl">
           {site.fullName}
