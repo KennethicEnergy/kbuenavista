@@ -117,7 +117,7 @@ const doc = new Document({
         sectionHeading("PROFESSIONAL SUMMARY"),
         para([
           body(
-            "Senior Front-End Developer with 8+ years of experience building scalable web applications across insurance, aviation, gaming, and iGaming industries. Expert in React, Next.js, TypeScript, and Angular with a proven track record of delivering production-grade UIs, leading code reviews, and owning full frontend architecture solo. Strong in API integration, real-time features, performance optimization, CI/CD workflows, and translating Figma designs into responsive, accessible interfaces."
+            "Senior Front-End Developer with 8+ years of experience building scalable web applications across insurance, aviation, and online gaming platforms. Expert in React, Next.js, TypeScript, and Angular with a proven track record of delivering production-grade UIs, leading code reviews, and owning full frontend architecture solo. Strong in API integration, real-time features, performance optimization, CI/CD workflows, and translating Figma designs into responsive, accessible interfaces."
           ),
         ]),
 
@@ -138,8 +138,8 @@ const doc = new Document({
           "Webzoid System Solutions Corporation",
           "April 2026 – Present"
         ),
-        jobSub("Sole Front-End Developer — WOWGames Online Casino Platform"),
-        bullet("Architected and built a full-scale online casino platform from scratch as the sole frontend developer using Next.js, React, and TypeScript"),
+        jobSub("Sole Front-End Developer — WOWGames Online Gaming Platform"),
+        bullet("Architected and built a full-scale online gaming platform from scratch as the sole frontend developer using Next.js, React, and TypeScript"),
         bullet("Owned end-to-end frontend delivery: app routing, authentication, WebSocket real-time features, game launcher, sportsbook, tournaments, and community forums"),
         bullet("Integrated REST APIs with TanStack Query; managed client state with Zustand; implemented form validation with Formik and Zod"),
         bullet("Delivered responsive UI across all breakpoints using Tailwind CSS and Motion for animated interactions"),
@@ -150,7 +150,7 @@ const doc = new Document({
           "Vela Ventures Inc.",
           "December 2024 – October 2025"
         ),
-        bullet("Developed betting websites and platforms including Mansion88 and S5.com using Next.js and JavaScript"),
+        bullet("Developed online gaming platforms including Mansion88 and S5.com using Next.js and JavaScript"),
         bullet("Built and maintained core features; integrated third-party and internal APIs for seamless user experiences"),
         bullet("Optimized site performance for fast, responsive interactions across devices and browsers"),
         bullet("Translated UI mockups into dynamic interfaces; coordinated with stakeholders on requirements and deployments"),
@@ -161,7 +161,7 @@ const doc = new Document({
           "BossDeal Corporation",
           "September 2024 – December 2024"
         ),
-        bullet("Developed betting game applications using Next.js and Vue.js in an agile delivery environment"),
+        bullet("Developed online gaming platforms using Next.js and Vue.js in an agile delivery environment"),
         bullet("Designed and implemented key features with seamless backend API integration"),
         bullet("Translated designer mockups into interactive, maintainable interfaces following best practices"),
         bullet("Wrote unit tests to ensure code reliability; collaborated with stakeholders on requirements and releases"),
@@ -215,7 +215,7 @@ const doc = new Document({
         ...projectEntry(
           "WOWGames",
           "Next.js · React · TypeScript · Tailwind CSS · Zustand · TanStack Query · WebSockets",
-          "Full-featured online casino platform built solo as sole frontend developer.",
+          "Full-featured online gaming platform built solo as sole frontend developer.",
           [
             "Game lobby, launcher, sportsbook, tournaments, promotions, referral program, VIP/profile pages, and community forum",
             "Real-time updates via WebSockets; authenticated user flows with NextAuth",
@@ -225,7 +225,7 @@ const doc = new Document({
         ...projectEntry(
           "Mansion88",
           "Next.js · React · JavaScript · SASS · Google Tag Manager · Google Analytics",
-          "Betting platform with responsive UI and third-party API integrations.",
+          "Online gaming platform with responsive UI and third-party API integrations.",
           [
             "Performance-optimized pages for seamless cross-device user experience",
             "Analytics and tag management integration for marketing and conversion tracking",
@@ -234,7 +234,7 @@ const doc = new Document({
         ...projectEntry(
           "Game99",
           "Next.js · React · TypeScript · SASS · Tailwind CSS",
-          "Multi-platform gaming application where users place bets across game categories.",
+          "Multi-platform online gaming platform built with Next.js and React.",
           [
             "Multi-theme architecture supporting multiple brand variants in one application",
             "Responsive UI built from Figma designs with scalable component patterns",

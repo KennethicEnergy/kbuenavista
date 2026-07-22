@@ -52,9 +52,9 @@ export default function AboutPage() {
         </p>
 
         <p className="mt-4 text-text-muted">
-          Since then I&apos;ve focused on multi-theme, multi-market platforms and
-          real-money gaming products across Southeast Asia, including Game99, Mansion88,
-          and now WOWGames — a full casino stack I architected end to end as the sole
+          Since then I&apos;ve focused on multi-theme, multi-market online gaming
+          platforms across Southeast Asia, including Game99, Mansion88, and now
+          WOWGames — an online gaming platform I architected end to end as the sole
           frontend developer
           {currentRole?.company ? (
             <>
