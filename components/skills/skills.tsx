@@ -1,6 +1,5 @@
 "use client";
 
-import type { ReactNode } from "react";
 import Marquee from "react-fast-marquee";
 import {
   BiLogoAngular,
@@ -52,11 +51,7 @@ const icons = [
   { icon: SiGoogleanalytics, label: "Analytics" },
 ];
 
-type SkillsProps = {
-  children?: ReactNode;
-};
-
-export function Skills({ children }: SkillsProps) {
+export function Skills() {
   return (
     <Section title="What I work with" subtitle="Tools and technologies across the stack.">
       <div className="overflow-hidden rounded-xl border border-bg-elevated bg-bg-surface/60">
@@ -74,7 +69,6 @@ export function Skills({ children }: SkillsProps) {
             ))}
           </Marquee>
         </div>
-        {children}
       </div>
     </Section>
   );
