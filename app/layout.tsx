@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Analytics } from "@vercel/analytics/next";
 import { Barlow_Condensed, DM_Sans } from "next/font/google";
+import Link from "next/link";
 import { AuthProvider } from "@/components/auth/auth-provider";
 import DynamicTitle from "@/components/dynamic-title/dynamic-title";
 import { Toaster } from "@/components/ui/toaster";
@@ -68,8 +69,14 @@ export default function RootLayout({
           <DynamicTitle />
           <div className="mx-auto flex min-h-screen w-full max-w-5xl flex-col px-5 md:px-8">
             <main className="flex-1">{children}</main>
-            <footer className="border-t border-bg-elevated py-8 text-sm text-text-muted">
-              © {new Date().getFullYear()} Kenneth Buenavista
+            <footer className="flex flex-wrap items-center justify-between gap-3 border-t border-bg-elevated py-8 text-sm text-text-muted">
+              <span>© {new Date().getFullYear()} Kenneth Buenavista</span>
+              <Link
+                href="/privacy"
+                className="text-text-muted underline-offset-4 hover:text-brand hover:underline"
+              >
+                Privacy Policy
+              </Link>
             </footer>
           </div>
           <Toaster />

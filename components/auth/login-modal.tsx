@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Link from "next/link";
 import { FcGoogle } from "react-icons/fc";
 import { IoClose } from "react-icons/io5";
 import { MdErrorOutline } from "react-icons/md";
@@ -88,7 +89,7 @@ export function LoginModal({ isOpen, onClose, onSuccess }: LoginModalProps) {
         </h2>
         <p className="mt-2 text-sm text-text-muted">
           {configured
-            ? "Continue with Google so downloads can be tracked. Your email is stored for analytics only."
+            ? "Continue with Google to get the file. I'll only use your details to follow up with you."
             : "Firebase Auth is not configured. Add env vars to enable Google sign-in."}
         </p>
 
@@ -101,6 +102,21 @@ export function LoginModal({ isOpen, onClose, onSuccess }: LoginModalProps) {
           <FcGoogle size={20} />
           {loading ? "Signing in..." : "Continue with Google"}
         </Button>
+
+        {configured ? (
+          <p className="mt-4 text-xs leading-relaxed text-text-muted">
+            By continuing, you share your email and first name so I can contact
+            you after your download.{" "}
+            <Link
+              href="/privacy"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-brand underline-offset-4 hover:underline"
+            >
+              Privacy Policy
+            </Link>
+          </p>
+        ) : null}
       </div>
     </div>
   );
