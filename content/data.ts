@@ -84,7 +84,7 @@ Delivers proposals and guides customers through the application process without 
 		company: "W-Bridges Manpower Corporation",
 		companyUrl: "https://wbridgesmanpower.com",
 		date: "September 2023 - September 2024",
-		description: "I work on maintaining large-scale projects with multiple variants, ensuring seamless multi-theme functionality within a single application. I quickly translate Figma designs into fully functional websites and apps, document my assigned tasks along with the necessary test attachments, and review and approve tickets submitted by other frontend developers. My routine also involves participating in scrum meetings and planning sessions, collaborating with teams across Southeast Asia to align on project goals and deliverables.",
+		description: "I developed and maintained Game99, a multi-theme online gaming platform serving multiple brand variants from a single Next.js and React codebase. My work covered translating Figma designs into responsive product UI, building and refining core frontend features, and keeping performance consistent across themes and markets. I documented assigned tasks with test attachments, reviewed and approved tickets from other frontend developers, and collaborated with cross-regional teams across Southeast Asia through scrum ceremonies and planning sessions to align on goals and ship deliverables.",
     projectSlug: "w-bridges",
     projectImages: [
       "/images/projects/game99-1.png",
@@ -97,7 +97,7 @@ Delivers proposals and guides customers through the application process without 
     ],
     projectGif: "/images/project-gifs/game99.gif",
     projectName: "Game99",
-    projectDescription: `Game99 is a multi-platform application built with Next.js and React. It is an online gaming platform.`,
+    projectDescription: `Game99 is a multi-theme online gaming platform built with Next.js and React. It supports multiple brand variants in one application, with responsive UI, scalable component patterns, and a consistent experience across devices and markets.`,
     projectTechStack: [
       'NextJs',
       'React',

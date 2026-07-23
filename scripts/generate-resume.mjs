@@ -171,10 +171,10 @@ const doc = new Document({
           "W-Bridges Manpower Corporation",
           "September 2023 – September 2024"
         ),
-        bullet("Maintained large-scale multi-theme applications with multiple brand variants in a single codebase"),
-        bullet("Translated Figma designs into fully functional, responsive websites and web applications"),
-        bullet("Reviewed and approved frontend tickets from other developers; documented tasks with test attachments"),
-        bullet("Collaborated with cross-regional teams across Southeast Asia in scrum ceremonies and planning sessions"),
+        bullet("Developed and maintained Game99, a multi-theme online gaming platform built with Next.js and React"),
+        bullet("Supported multiple brand variants in a single codebase with scalable component patterns and consistent UX"),
+        bullet("Translated Figma designs into fully functional, responsive product interfaces across devices and markets"),
+        bullet("Reviewed and approved frontend tickets; documented tasks with test attachments; collaborated with Southeast Asia teams in scrum"),
 
         jobHeader(
           "Senior Front-End Web Developer",
@@ -234,10 +234,10 @@ const doc = new Document({
         ...projectEntry(
           "Game99",
           "Next.js · React · TypeScript · SASS · Tailwind CSS",
-          "Multi-platform online gaming platform built with Next.js and React.",
+          "Multi-theme online gaming platform supporting multiple brand variants in one application.",
           [
-            "Multi-theme architecture supporting multiple brand variants in one application",
-            "Responsive UI built from Figma designs with scalable component patterns",
+            "Shared Next.js and React codebase with scalable component patterns across themes and markets",
+            "Responsive product UI built from Figma designs for a consistent cross-device experience",
           ]
         ),
         ...projectEntry(
