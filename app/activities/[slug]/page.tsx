@@ -76,7 +76,7 @@ export default async function ActivityPage({ params }: ActivityPageProps) {
           />
         </div>
       </div>
-      <p className="mt-6 max-w-3xl text-text-muted">{activity.description}</p>
+      <p className="mt-6 w-full text-text-muted">{activity.description}</p>
 
       {activity.videoUrl ? (
         <div className="mt-10 aspect-video w-full overflow-hidden">

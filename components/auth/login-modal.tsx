@@ -84,7 +84,7 @@ export function LoginModal({ isOpen, onClose, onSuccess }: LoginModalProps) {
           <IoClose size={22} />
         </button>
 
-        <h2 id="login-modal-title" className="font-display text-xl font-semibold text-text-primary">
+        <h2 id="login-modal-title" className="font-display text-xl font-semibold text-brand">
           Sign in to download resume
         </h2>
         <p className="mt-2 text-sm text-text-muted">
