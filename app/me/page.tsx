@@ -54,8 +54,8 @@ export default function AboutPage() {
         <p className="mt-4 text-text-muted">
           Since then I&apos;ve focused on multi-theme, multi-market online gaming
           platforms across Southeast Asia, including Game99, Mansion88, and now
-          WOWGames — an online gaming platform I architected end to end as the sole
-          frontend developer
+          WOWGames v2 — which I&apos;m rebuilding from scratch as the sole frontend
+          developer
           {currentRole?.company ? (
             <>
               {" "}
@@ -74,7 +74,7 @@ export default function AboutPage() {
               )}
             </>
           ) : null}
-          .
+          , after the original Taiwanese team&apos;s codebase was not shared.
         </p>
 
         {uniqueProjects.length > 0 ? (

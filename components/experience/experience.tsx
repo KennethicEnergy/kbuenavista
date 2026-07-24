@@ -1,5 +1,10 @@
 import Link from "next/link";
-import type { ActivityData, TimelineData } from "@/content/types";
+import type {
+  ActivityData,
+  ExperienceHighlight,
+  HighlightPart,
+  TimelineData,
+} from "@/content/types";
 import { Section } from "@/components/ui/section";
 import { CiImageOn } from "react-icons/ci";
 import { cn } from "@/lib/utils/cn";
@@ -8,6 +13,40 @@ type ExperienceProps = {
   timeline: TimelineData[];
   activities: ActivityData[];
 };
+
+function highlightKey(highlight: ExperienceHighlight, index: number) {
+  if (typeof highlight === "string") return highlight;
+  return `${index}-${highlight.map((part) => part.text).join("")}`;
+}
+
+function HighlightText({ highlight }: { highlight: ExperienceHighlight }) {
+  if (typeof highlight === "string") return highlight;
+
+  return highlight.map((part, index) => (
+    <HighlightSegment key={`${part.text}-${index}`} part={part} />
+  ));
+}
+
+function HighlightSegment({ part }: { part: HighlightPart }) {
+  if (part.href) {
+    return (
+      <Link
+        href={part.href}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="font-medium text-brand underline-offset-4 hover:underline"
+      >
+        {part.text}
+      </Link>
+    );
+  }
+
+  if (part.brand) {
+    return <span className="font-medium text-brand">{part.text}</span>;
+  }
+
+  return part.text;
+}
 
 export function Experience({ timeline, activities }: ExperienceProps) {
   const items = [...timeline].reverse();
@@ -59,11 +98,21 @@ export function Experience({ timeline, activities }: ExperienceProps) {
               ) : null}
             </div>
 
-            <p className="mt-3 text-justify text-sm leading-relaxed text-text-muted md:text-base">
-              {Array.isArray(item.description)
-                ? item.description.join(" ")
-                : item.description}
-            </p>
+            {item.highlights.length > 0 ? (
+              <ul className="mt-3 list-disc space-y-2 pl-5 text-sm leading-relaxed text-text-muted md:text-base">
+                {item.highlights.map((highlight, index) => (
+                  <li key={highlightKey(highlight, index)}>
+                    <HighlightText highlight={highlight} />
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p className="mt-3 text-justify text-sm leading-relaxed text-text-muted md:text-base">
+                {Array.isArray(item.description)
+                  ? item.description.join(" ")
+                  : item.description}
+              </p>
+            )}
           </li>
         ))}
       </ol>

@@ -35,6 +35,10 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
       ? project.projectImages
       : ["/images/placeholders/project.jpg"];
 
+  const roleDescription = Array.isArray(project.description)
+    ? project.description.join(" ")
+    : project.description;
+
   return (
     <article className="py-16 animate-fade-up">
       <Link
@@ -49,7 +53,14 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
         {project.projectName}
       </h1>
       <p className="mt-2 text-brand">{project.company}</p>
-      <p className="mt-6 max-w-3xl text-text-muted">{project.projectDescription}</p>
+      {project.projectDescription ? (
+        <p className="mt-6 w-full text-text-muted">{project.projectDescription}</p>
+      ) : null}
+      {roleDescription ? (
+        <p className="mt-4 w-full text-justify text-sm leading-relaxed text-text-muted md:text-base">
+          {roleDescription}
+        </p>
+      ) : null}
 
       {project.projectTechStack?.length ? (
         <ul className="mt-6 flex flex-wrap gap-x-3 gap-y-1 text-sm text-text-muted">
@@ -70,22 +81,24 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
         />
       </div>
 
-      <div className="mt-6 grid gap-4 sm:grid-cols-2">
-        {images.map((src, index) => (
-          <div
-            key={`${src}-${index}`}
-            className="relative aspect-video overflow-hidden"
-          >
-            <SafeImage
-              src={src}
-              alt={`${project.projectName} screenshot ${index + 1}`}
-              fill
-              sizes="(max-width: 768px) 100vw, 480px"
-              className="object-cover"
-            />
-          </div>
-        ))}
-      </div>
+      {project.projectImages && project.projectImages.length > 0 ? (
+        <div className="mt-6 grid gap-4 sm:grid-cols-2">
+          {images.map((src, index) => (
+            <div
+              key={`${src}-${index}`}
+              className="relative aspect-video overflow-hidden"
+            >
+              <SafeImage
+                src={src}
+                alt={`${project.projectName} screenshot ${index + 1}`}
+                fill
+                sizes="(max-width: 768px) 100vw, 480px"
+                className="object-cover"
+              />
+            </div>
+          ))}
+        </div>
+      ) : null}
     </article>
   );
 }

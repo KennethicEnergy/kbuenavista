@@ -2,9 +2,6 @@ import type { SiteContentBase } from "./types";
 
 export const introductions = [
   "I create beautiful websites your users will love.",
-  "I build fast, modern web experiences that just work.",
-  "I turn complex ideas into intuitive user interfaces.",
-  "I transform designs into pixel-perfect experiences.",
   "I build scalable frontend applications with clean, maintainable code.",
 ] as const;
 

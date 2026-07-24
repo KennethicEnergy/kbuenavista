@@ -9,6 +9,14 @@ export const timelineData: TimelineData[] = [
 		companyUrl: "https://98labs.com",
 		date: "November 2016 - April 2017",
 		description: "I was assigned to do QA tasks, which is where my journey began and where I first learned HTML, CSS, and JavaScript. As I tested various applications and features, I became more involved in understanding how the frontend and backend interact. I started writing simple scripts to automate repetitive tasks, which deepened my understanding of web development. Over time, I took on more responsibility, working alongside developers to identify bugs, verify bug fixes, and ensure that features were implemented according to specifications. This experience sparked my interest in coding, and I began to build a solid foundation in web development.",
+		highlights: [
+			[
+				{ text: "Software / IT services — performed QA on civic tech " },
+				{ text: ", and learned HTML, CSS, and JavaScript fundamentals" },
+			],
+			"Wrote simple scripts to automate repetitive testing tasks",
+			"Collaborated with developers to identify bugs, verify fixes, and validate feature specs",
+		],
     projectSlug: null,
     projectImages: null,
     projectGif: null,
@@ -23,6 +31,20 @@ export const timelineData: TimelineData[] = [
 		companyUrl: "https://98labs.com",
 		date: "December 2018 - May 2021",
 		description: "This is where I started learning how to build websites using React and Angular. My journey began with grasping the fundamentals of JavaScript and diving into the core concepts of both frameworks, such as component-based architecture, state management, and routing. As I gained more experience, I explored more advanced topics like performance optimization, building reusable components, and integrating with APIs. I also focused on improving my debugging and testing skills while ensuring cross-browser compatibility and responsive design. This foundation laid the groundwork for my career, and I continue to refine my skills in modern frontend development.",
+		highlights: [
+			[
+				{ text: "Software / IT services — built websites with React and Angular for projects including " },
+				{
+					text: "DevLIVE",
+					href: "https://dilg.gov.ph/news/DILG-Use-DevLIVE-mobile-app-to-give-feedback-on-local-infra-projects/NC-2019-1098",
+				},
+				{ text: " and " },
+				{ text: "Robinsons Bank Business Linker", brand: true },
+				{ text: ", covering components, state management, and routing" },
+			],
+			"Improved performance, reusable components, and API integrations",
+			"Strengthened debugging, testing, cross-browser compatibility, and responsive design",
+		],
     projectSlug: null,
     projectImages: null,
     projectGif: null,
@@ -37,6 +59,16 @@ export const timelineData: TimelineData[] = [
 		companyUrl: "https://www.tcs.com",
 		date: "May 2021 - July 2022",
 		description: "I worked as a maintainer of the project, reviewing other developers' code, merging it into the main branch, and overseeing deployments to different environments using Jenkins, integrated with Husky, SonarQube, and Fortify for continuous integration and quality checks. In addition, I was assigned to the Production Support Service Team, where I analyzed and resolved issues raised by other agents using tools like New Relic, Devo, and RabbitMQ. I also contributed to coding UI and components, enhancing the user experience while troubleshooting and improving functionality. This role allowed me to bridge the gap between support tasks and frontend development, ensuring both system stability and a seamless user interface.",
+		highlights: [
+			[
+				{ text: "Insurance — maintained " },
+				{ text: "Manulife ID", href: "https://www.manulife.co.id/" },
+				{ text: " ePOS: code reviews, merges, and multi-environment deployments via Jenkins" },
+			],
+			"Integrated CI quality checks with Husky, SonarQube, and Fortify",
+			"Resolved production issues using New Relic, Devo, and RabbitMQ",
+			"Built and improved UI components while bridging support and frontend work",
+		],
     projectSlug: "tcs",
     projectImages: [
       "/images/projects/manulife-id-1.png",
@@ -61,6 +93,17 @@ Delivers proposals and guides customers through the application process without 
 		companyUrl: "https://www.collaberadigital.com",
 		date: "July 2022 - July 2023",
 		description: "My day-to-day work involves converting all UI content into a CMS to enhance website optimization and creating fluid UI and UX based on designs provided in Figma. I document my assigned tasks along with the corresponding test attachments, review and approve tickets submitted by other frontend developers, and participate in scrum meetings and planning sessions. Collaboration is a key part of my role, as I work closely with teams from various departments to ensure projects are executed effectively.",
+		highlights: [
+			[
+				{ text: "Airline / travel — converted " },
+				{ text: "Cebu Pacific", href: "https://www.cebupacificair.com/" },
+				{ text: " UI content into a CMS to improve website optimization" },
+			],
+      "Spearheaded the release of the Flight Disruption System",
+			"Built fluid UI/UX from Figma designs",
+			"Documented tasks with test attachments and reviewed frontend tickets",
+			"Collaborated across departments through scrum and planning sessions",
+		],
     projectSlug: "collabera",
     projectImages: [
       "/images/projects/cebupacific-1.jpg",
@@ -85,6 +128,12 @@ Delivers proposals and guides customers through the application process without 
 		companyUrl: "https://wbridgesmanpower.com",
 		date: "September 2023 - September 2024",
 		description: "I developed and maintained Game99, a multi-theme online gaming platform serving multiple brand variants from a single Next.js and React codebase. My work covered translating Figma designs into responsive product UI, building and refining core frontend features, and keeping performance consistent across themes and markets. I documented assigned tasks with test attachments, reviewed and approved tickets from other frontend developers, and collaborated with cross-regional teams across Southeast Asia through scrum ceremonies and planning sessions to align on goals and ship deliverables.",
+		highlights: [
+			"Online gaming / iGaming — developed and maintained Game99, a multi-theme platform on Next.js and React",
+			"Translated Figma designs into responsive UI and refined core frontend features",
+			"Kept performance consistent across brand variants and markets",
+			"Collaborated with cross-regional Southeast Asia teams in scrum and planning",
+		],
     projectSlug: "w-bridges",
     projectImages: [
       "/images/projects/game99-1.png",
@@ -113,6 +162,12 @@ Delivers proposals and guides customers through the application process without 
     companyUrl: null,
 		date: "September 2024 - December 2024",
 		description: "In this role, I am responsible for developing online gaming platforms using Next.js and Vue.js. My tasks include designing and implementing key features, ensuring seamless integration of backend APIs, and optimizing performance for a smooth user experience. I work closely with designers to translate mockups into interactive interfaces, follow best practices for maintainable and scalable code, and implement unit tests to ensure code reliability. Additionally, I collaborate with stakeholders to gather requirements, troubleshoot issues, and deploy updates, ensuring the applications meet user expectations and project deadlines.",
+		highlights: [
+			"Online gaming / iGaming — developed gaming platforms with Next.js and Vue.js",
+			"Implemented key features, backend API integrations, and performance optimizations",
+			"Translated designer mockups into interactive interfaces with unit tests",
+			"Worked with stakeholders on requirements, troubleshooting, and deployments",
+		],
     projectSlug: null,
     projectImages: null,
     projectGif: null,
@@ -127,7 +182,19 @@ Delivers proposals and guides customers through the application process without 
     companyUrl: "https://www.velaventures.net",
 		date: "December 2024 - October 2025",
 		description: "I specialized in developing online gaming platforms such as Mansion88 and S5.com, using Next.js and JavaScript. My responsibilities included building and maintaining essential features, integrating third-party and internal APIs, and optimizing site performance for a smooth and responsive user experience. I closely collaborated with designers to translate UI mockups into dynamic, interactive interfaces, and wrote clean, maintainable code following best practices. I also coordinated with stakeholders to gather requirements, troubleshoot issues, and deploy updates, ensuring the platform met user expectations and business objectives.",
-    projectSlug: null,
+		highlights: [
+			[
+				{ text: "Online gaming / iGaming — built and maintained platforms including " },
+				{ text: "Mansion88", href: "https://www.m88.com/" },
+				{ text: " and " },
+				{ text: "S5.com", href: "https://www.s5.com/" },
+				{ text: " with Next.js" },
+			],
+			"Integrated third-party and internal APIs and optimized site performance",
+			"Translated UI mockups into interactive interfaces with clean, maintainable code",
+			"Coordinated with stakeholders on requirements, issues, and deployments",
+		],
+    projectSlug: "mansion88",
     projectImages: null,
     projectGif: "/images/project-gifs/mansion88.gif",
     projectName: "Mansion88",
@@ -149,6 +216,12 @@ Delivers proposals and guides customers through the application process without 
     date: "October 2025 - April 2026",
     description:
       "Took a planned career break after completing my previous role to focus on personal projects, home improvement, and recharging. During this time, I managed my newly turned-over home, learned practical skills such as basic welding and DIY repairs, maintained the property and garden, cared for my dogs, and continued sharpening my frontend development skills by exploring modern web technologies and building personal projects.",
+		highlights: [
+			"Personal sabbatical — took a planned career break focused on home, projects, and recharging",
+			"Managed a newly turned-over home and learned basic welding and DIY repairs",
+			"Maintained the property and garden while caring for my dogs",
+			"Continued frontend learning through modern web tech and personal projects",
+		],
     projectSlug: null,
     projectImages: null,
     projectGif: null,
@@ -169,9 +242,19 @@ Delivers proposals and guides customers through the application process without 
 		id: 9,
 		title: "Senior Front-End Web Developer",
 		company: "Webzoid System Solutions Corporation",
-		companyUrl: "https://www.webzoid.com",
+		companyUrl: null,
 		date: "April 2026 - Present",
-		description: "As the sole frontend developer, I architected and built WOWGames — a full-scale online gaming platform — from the ground up using Next.js and React. I own the entire frontend: app routing, authentication flows, real-time features via WebSockets, game launcher integration, sportsbook and tournament modules, community forums, promotions, VIP account pages, and responsive UI across all breakpoints. I integrated REST APIs with TanStack Query, managed client state with Zustand, implemented form validation with Formik and Zod, and delivered animated interactions with Motion. Working independently, I made architectural decisions, established component patterns, and shipped production-ready features end to end.",
+		description: "As the sole frontend developer, I am building WOWGames v2 — a full-scale online gaming platform — from scratch in Next.js and React after the original Taiwanese team's codebase was not shared. I own the entire frontend: app routing, authentication flows, real-time features via WebSockets, game launcher integration, sportsbook and tournament modules, community forums, promotions, VIP account pages, and responsive UI across all breakpoints. I integrated REST APIs with TanStack Query, managed client state with Zustand, implemented form validation with Formik and Zod, and delivered animated interactions with Motion. Working independently, I made architectural decisions, established component patterns, and shipped production-ready features end to end.",
+		highlights: [
+			[
+        {text: "Online gaming / iGaming — sole frontend developer rebuilding "},
+        {text: "WOWGames", href: "https://www.wowgames.com/"},
+        {text: " (v2) from the ground up"}
+      ],
+			"Owned routing, auth, WebSockets, game launcher, sportsbook, tournaments, and account UI",
+			"Integrated REST APIs with TanStack Query, Zustand, Formik/Zod, and Motion",
+			"Made architectural decisions and shipped production-ready features end to end",
+		],
 		projectSlug: "wowgames",
 		projectImages: [
       "/images/projects/wowgames-1.png",
@@ -183,7 +266,7 @@ Delivers proposals and guides customers through the application process without 
     ],
 		projectGif: "/images/project-gifs/wowgames.gif",
 		projectName: "WOWGames",
-		projectDescription: `WOWGames is a full-featured online gaming platform built solo with Next.js and React. It includes a game lobby and launcher, sportsbook, tournaments, promotions, referral program, VIP and profile account pages, customer service, and a community forum — all with real-time updates, authenticated user flows, and a responsive Tailwind CSS interface.`,
+		projectDescription: `WOWGames v2 is a full-featured online gaming platform rebuilt from scratch with Next.js and React after the original Taiwanese team's codebase was unavailable. It includes a game lobby and launcher, sportsbook, tournaments, promotions, referral program, VIP and profile account pages, customer service, and a community forum — all with real-time updates, authenticated user flows, and a responsive Tailwind CSS interface.`,
 		projectTechStack: [
 			'NextJs',
 			'React',

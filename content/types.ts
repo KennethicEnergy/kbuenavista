@@ -13,6 +13,17 @@ export type ActivityData = {
   activitySlug: string | null;
 };
 
+/** A plain text segment, or a brand-styled name (optionally linked). */
+export type HighlightPart = {
+  text: string;
+  href?: string;
+  /** Apply brand styling without a link (e.g. project name with no public URL). */
+  brand?: boolean;
+};
+
+/** A highlight bullet: plain string, or mixed text + brand links. */
+export type ExperienceHighlight = string | HighlightPart[];
+
 export type TimelineData = {
   id: number;
   title: string;
@@ -20,6 +31,8 @@ export type TimelineData = {
   companyUrl: string | null;
   date: string;
   description: string | string[];
+  /** Short bullet points shown on the Experience section */
+  highlights: ExperienceHighlight[];
   /** Clean slug for `/projects/[slug]`, or null when no project page */
   projectSlug: string | null;
   projectImages: string[] | null;
