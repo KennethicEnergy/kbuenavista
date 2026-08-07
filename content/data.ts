@@ -83,7 +83,16 @@ Delivers proposals and guides customers through the application process without 
     projectTechStack: [
       'Angular',
       'TypeScript',
-      'SASS'
+      'SASS',
+      'Jenkins',
+      'SonarQube',
+      'New Relic',
+      'RabbitMQ',
+      'REST APIs',
+      'Responsive UI',
+      'Form Validation',
+      'CI/CD',
+      'Production Support',
     ]
 	},
 	{
@@ -117,8 +126,16 @@ Delivers proposals and guides customers through the application process without 
     projectTechStack: [
       'Angular',
       'TypeScript',
+      'JavaScript',
+      'HTML',
+      'CSS',
       'SASS',
-      'Figma'
+      'Figma',
+      'REST APIs',
+      'Responsive UI',
+      'CMS Integration',
+      'Online Payments',
+      'Component Architecture',
     ]
 	},
 	{
@@ -152,7 +169,13 @@ Delivers proposals and guides customers through the application process without 
       'React',
       'TypeScript',
       'SASS',
-      'Tailwind'
+      'Tailwind',
+      'Figma',
+      'REST APIs',
+      'Responsive UI',
+      'Multi-theme Architecture',
+      'Performance Optimization',
+      'Cross-market UI',
     ]
 	},
 	{
@@ -205,7 +228,11 @@ Delivers proposals and guides customers through the application process without 
       'JavaScript',
       'SASS',
       'Google Tag Manager',
-      'Google Analytics'
+      'Google Analytics',
+      'REST APIs',
+      'Responsive UI',
+      'Third-party Integrations',
+      'Performance Optimization',
     ]
 	},
   {
@@ -266,23 +293,23 @@ Delivers proposals and guides customers through the application process without 
     ],
 		projectGif: "/images/project-gifs/wowgames.gif",
 		projectName: "WOWGames",
-		projectDescription: `WOWGames v2 is a full-featured online gaming platform rebuilt from scratch with Next.js and React after the original Taiwanese team's codebase was unavailable. It includes a game lobby and launcher, sportsbook, tournaments, promotions, referral program, VIP and profile account pages, customer service, and a community forum — all with real-time updates, authenticated user flows, and a responsive Tailwind CSS interface.`,
+		projectDescription: `WOWGames v2 is a full-featured online gaming platform rebuilt from scratch with Next.js and React after the original codebase was unavailable. It includes a game lobby and launcher, sportsbook, tournaments, promotions, referral program, VIP and profile account pages, customer service, and a community forum — all with real-time updates, authenticated user flows, and a responsive Tailwind CSS interface.`,
 		projectTechStack: [
 			'NextJs',
 			'React',
 			'TypeScript',
 			'Tailwind',
-      'Zustand',
-      'TanStack Query',
-      'Formik',
-      'Zod',
-      'Motion',
-      'WebSockets',
-      'REST APIs',
-      'Client State Management',
-      'Form Validation',
-      'Animated Interactions',
-      'Responsive UI',
+			'Zustand',
+			'TanStack Query',
+			'Formik',
+			'Zod',
+			'Motion',
+			'WebSockets',
+			'REST APIs',
+			'Client State Management',
+			'Form Validation',
+			'Animated Interactions',
+			'Responsive UI',
 		]
 	},
 ];

@@ -4,6 +4,7 @@ import { Barlow_Condensed, DM_Sans } from "next/font/google";
 import Link from "next/link";
 import { AuthProvider } from "@/components/auth/auth-provider";
 import DynamicTitle from "@/components/dynamic-title/dynamic-title";
+import TopLoader from "@/components/top-loader/top-loader";
 import { Toaster } from "@/components/ui/toaster";
 import { site } from "@/content/site";
 import "./globals.css";
@@ -66,6 +67,7 @@ export default function RootLayout({
     <html lang="en" className={`${barlow.variable} ${dmSans.variable} h-full`}>
       <body className="min-h-full font-sans antialiased">
         <AuthProvider>
+          <TopLoader />
           <DynamicTitle />
           <div className="mx-auto flex min-h-screen w-full max-w-5xl flex-col px-5 md:px-8">
             <main className="flex-1">{children}</main>

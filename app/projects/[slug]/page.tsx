@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { TechStack } from "@/components/skills/tech-stack";
 import { SafeImage } from "@/components/ui/safe-image";
 import { getProjectBySlug, getProjectSlugs } from "@/lib/content";
 
@@ -63,11 +64,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
       ) : null}
 
       {project.projectTechStack?.length ? (
-        <ul className="mt-6 flex flex-wrap gap-x-3 gap-y-1 text-sm text-text-muted">
-          {project.projectTechStack.map((tech) => (
-            <li key={tech}>{tech}</li>
-          ))}
-        </ul>
+        <TechStack items={project.projectTechStack} />
       ) : null}
 
       <div className="relative mt-10 aspect-video w-full overflow-hidden">

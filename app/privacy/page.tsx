@@ -36,7 +36,7 @@ export default function PrivacyPage() {
           <p className="mt-3 leading-relaxed">
             This Privacy Policy explains how {site.fullName} (“I”, “me”, or “my”)
             collects and uses limited personal information when you sign in with
-            Google to download my resume from {site.siteUrl.replace(/^https?:\/\//, "")}.
+            Google to download my resume from <Link href={site.siteUrl} target="_blank" rel="noopener noreferrer" className="text-brand underline-offset-4 hover:underline">{site.siteUrl.replace(/^https?:\/\//, "")}</Link>.
           </p>
         </section>
 
