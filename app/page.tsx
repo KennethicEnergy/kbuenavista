@@ -1,6 +1,5 @@
 import { Experience } from "@/components/experience/experience";
 import { Profile } from "@/components/profile/profile";
-import { Skills } from "@/components/skills/skills";
 import { getActivities, getSite, getTimeline } from "@/lib/content";
 
 export default function HomePage() {
@@ -10,8 +9,7 @@ export default function HomePage() {
 
   return (
     <>
-      <Profile site={site} />
-      <Skills />
+      <Profile site={site} timeline={timeline} />
       <Experience timeline={timeline} activities={activities} />
     </>
   );

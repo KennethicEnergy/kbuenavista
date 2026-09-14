@@ -13,17 +13,47 @@ import { LoginModal } from "@/components/auth/login-modal";
 import { ThankYouModal } from "@/components/auth/thank-you-modal";
 import { useAuth } from "@/components/auth/auth-provider";
 import { RotatingIntroduction } from "@/components/ui/rotating-introduction";
+import { HeroParticles } from "@/components/profile/hero-particles";
+import { SkillsMarquee } from "@/components/skills/skills-marquee";
 import { toaster } from "@/lib/toaster";
+import { cn } from "@/lib/utils/cn";
 import {
   consumePendingResumeDownload,
   isMobileClient,
   openResumeUrl,
 } from "@/lib/resume-gate";
-import type { SiteContent } from "@/content/types";
+import type { SiteContent, TimelineData } from "@/content/types";
 
 type ProfileProps = {
   site: SiteContent;
+  timeline: TimelineData[];
 };
+
+function isCareerBreak(item: TimelineData) {
+  return (
+    /break/i.test(item.company) ||
+    /break/i.test(item.title) ||
+    /break/i.test(item.projectName ?? "")
+  );
+}
+
+function getFeaturedRoles(timeline: TimelineData[], count = 3) {
+  return [...timeline]
+    .reverse()
+    .filter((item) => !isCareerBreak(item))
+    .slice(0, count);
+}
+
+function shortRoleDate(date: string) {
+  const parts = date.split(/\s*[-–—]\s*/);
+  if (parts.length < 2) return date;
+  const startYear = parts[0]?.match(/\d{4}/)?.[0];
+  const end = /present/i.test(parts[1] ?? "")
+    ? "Present"
+    : parts[1]?.match(/\d{4}/)?.[0];
+  if (startYear && end) return `${startYear} – ${end}`;
+  return date;
+}
 
 async function requestResumeUrl(token: string) {
   const res = await fetch("/api/resume-download", {
@@ -51,13 +81,55 @@ function notifyDownloadError() {
   );
 }
 
-export function Profile({ site }: ProfileProps) {
+function usePrefersReducedMotion() {
+  const [reduced, setReduced] = useState(false);
+
+  useEffect(() => {
+    const media = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const update = () => setReduced(media.matches);
+    update();
+    media.addEventListener("change", update);
+    return () => media.removeEventListener("change", update);
+  }, []);
+
+  return reduced;
+}
+
+function useScrollParallax(enabled: boolean) {
+  const [offset, setOffset] = useState(0);
+
+  useEffect(() => {
+    if (!enabled) return;
+
+    let frame = 0;
+    const onScroll = () => {
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(() => {
+        setOffset(window.scrollY);
+      });
+    };
+
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => {
+      cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", onScroll);
+    };
+  }, [enabled]);
+
+  return enabled ? offset : 0;
+}
+
+export function Profile({ site, timeline }: ProfileProps) {
   const { user, getIdToken, configured, signOut } = useAuth();
   const [showLogin, setShowLogin] = useState(false);
   const [showThanks, setShowThanks] = useState(false);
   const [thanksName, setThanksName] = useState("there");
   const [isDownloading, setIsDownloading] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const reducedMotion = usePrefersReducedMotion();
+  const scrollY = useScrollParallax(!reducedMotion);
+  const featuredRoles = getFeaturedRoles(timeline);
 
   const performDownload = async (token: string, displayName?: string | null) => {
     setIsDownloading(true);
@@ -135,10 +207,15 @@ export function Profile({ site }: ProfileProps) {
     }
   };
 
+  const handleSignOut = async () => {
+    setMenuOpen(false);
+    await signOut();
+  };
+
   const renderUser = () => (
     <>
       {user ? (
-        <div data-account-menu className="relative z-30 ml-1">
+        <div data-account-menu className="relative z-30">
           <button
             type="button"
             onClick={() => setMenuOpen((open) => !open)}
@@ -171,7 +248,7 @@ export function Profile({ site }: ProfileProps) {
           {menuOpen ? (
             <div
               role="menu"
-              className="absolute right-0 z-50 mt-2 min-w-44 overflow-hidden rounded-md border border-brand/20 bg-bg-surface py-1 shadow-lg"
+              className="absolute left-0 z-50 mt-2 min-w-44 overflow-hidden rounded-md border border-brand/20 bg-bg-surface py-1 shadow-lg"
             >
               <button
                 type="button"
@@ -201,22 +278,23 @@ export function Profile({ site }: ProfileProps) {
           disabled={isDownloading || !configured}
           aria-busy={isDownloading}
           aria-label={isDownloading ? "Preparing resume download" : "Download resume"}
+          className="shrink-0"
         >
           {isDownloading ? (
             <ImSpinner2 size={18} className="animate-spin" />
           ) : (
             <MdFileDownload size={18} />
           )}
+          <span className="whitespace-nowrap">
+            {isDownloading ? "Preparing…" : "Download resume"}
+          </span>
         </Button>
       )}
-
     </>
-  )
+  );
 
-  const handleSignOut = async () => {
-    setMenuOpen(false);
-    await signOut();
-  };
+  const particlesOffset = Math.min(scrollY * 0.35, 180);
+  const contentOffset = Math.min(scrollY * 0.18, 90);
 
   return (
     <>
@@ -235,47 +313,124 @@ export function Profile({ site }: ProfileProps) {
         linkedinUrl={site.linkedinUrl}
       />
 
-      <section className="flex flex-col items-start justify-between py-10 animate-fade-up md:py-12 lg:flex-row">
-        <div className="w-full">
-          <div className="flex w-full items-center justify-between gap-3">
-            <h1 className="font-display text-4xl font-bold tracking-tight text-text-primary lg:text-7xl">
-              <Link href="/me" className="text-brand transition-colors hover:underline">
-                {site.fullName}
-              </Link>
-            </h1>
-            <div className="lg:hidden">{renderUser()}</div>
-          </div>
-          <p className="my-2 flex items-center gap-2 text-sm uppercase tracking-section">
-            <RiMapPin2Line size={18} /> {site.country}
-          </p>
-          <RotatingIntroduction
-            lines={site.introductions}
-            intervalSeconds={site.introductionIntervalSeconds}
-            className="mt-3 max-w-xl text-base text-text-muted"
-          />
+      <section
+        aria-label="Introduction"
+        className="relative left-1/2 w-screen max-w-[100vw] -translate-x-1/2 isolate overflow-hidden"
+      >
+        <div className="pointer-events-none absolute inset-0 bg-bg-base" aria-hidden>
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,color-mix(in_srgb,var(--brand)_14%,transparent),transparent_55%),radial-gradient(ellipse_at_bottom_left,color-mix(in_srgb,var(--bg-elevated)_80%,transparent),transparent_50%)]" />
+          {!reducedMotion ? (
+            <HeroParticles
+              className="absolute inset-0 will-change-transform"
+              style={{ transform: `translate3d(0, ${particlesOffset}px, 0)` }}
+            />
+          ) : null}
         </div>
 
-        <div className="mt-5 flex items-start justify-end gap-1 lg:items-center">
-          <Link
-            href={site.githubUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 rounded-md px-3 py-2 text-text-muted transition-colors hover:text-brand"
-            aria-label="GitHub"
+        <div className="relative mx-auto flex min-h-[100dvh] w-full max-w-5xl flex-col px-5 py-16 md:px-8 md:py-20">
+          <div
+            className="flex flex-1 flex-col justify-center will-change-transform"
+            style={
+              reducedMotion
+                ? undefined
+                : { transform: `translate3d(0, ${contentOffset}px, 0)` }
+            }
           >
-            <BiLogoGithub size={24} />
-          </Link>
-          <Link
-            href={site.linkedinUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 rounded-md px-3 py-2 text-text-muted transition-colors hover:text-brand"
-            aria-label="LinkedIn"
-          >
-            <IoLogoLinkedin size={24} />
-          </Link>
-          <div className="hidden lg:block">
-            {renderUser()}
+            <div className="flex max-w-4xl flex-col items-start">
+              <p className="animate-fade-up flex items-center gap-2 text-sm uppercase tracking-section text-brand">
+                <RiMapPin2Line size={18} /> {site.country}
+              </p>
+
+              <h1 className="animate-fade-up-delayed mt-4 font-display text-5xl font-bold leading-[0.95] tracking-tight text-brand sm:text-6xl md:text-7xl lg:text-8xl">
+                <Link href="/me" className="transition-colors hover:underline">
+                  {site.fullName}
+                </Link>
+              </h1>
+
+              <RotatingIntroduction
+                lines={site.introductions}
+                intervalSeconds={site.introductionIntervalSeconds}
+                className="mt-6 min-h-[2lh] max-w-xl text-lg text-text-primary/90 md:text-xl [animation-delay:0.12s]"
+              />
+
+              <div className="mt-10 flex w-full animate-fade-up-late items-start justify-between gap-4">
+                <div>{renderUser()}</div>
+                <div className="flex items-center gap-1 sm:gap-2">
+                  <Link
+                    href={site.githubUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 rounded-md px-3 py-2 text-text-muted transition-colors hover:text-brand"
+                    aria-label="GitHub"
+                  >
+                    <BiLogoGithub size={24} />
+                  </Link>
+                  <Link
+                    href={site.linkedinUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 rounded-md px-3 py-2 text-text-muted transition-colors hover:text-brand"
+                    aria-label="LinkedIn"
+                  >
+                    <IoLogoLinkedin size={24} />
+                  </Link>
+                </div>
+              </div>
+            </div>
+
+            {featuredRoles.length > 0 ? (
+              <div className="mt-10 max-w-4xl animate-fade-up-late">
+                <div className="flex items-baseline justify-between gap-4">
+                  <p className="text-sm uppercase tracking-section text-brand">
+                    Recent roles
+                  </p>
+                  <Link
+                    href="#experience"
+                    className="text-sm text-text-muted underline-offset-4 transition-colors hover:text-brand hover:underline"
+                  >
+                    Full experience
+                  </Link>
+                </div>
+                <ul className="mt-3 space-y-2">
+                  {featuredRoles.map((role, index) => (
+                    <li
+                      key={role.id}
+                      className={cn(
+                        "flex flex-wrap items-baseline gap-x-2 gap-y-0.5 text-sm text-text-muted transition-opacity md:text-base",
+                        index === 1 && "opacity-55",
+                        index === 2 && "opacity-28",
+                      )}
+                    >
+                      <span
+                        className={cn(
+                          "font-medium",
+                          index === 0 ? "text-text-primary" : "text-text-muted",
+                        )}
+                      >
+                        {role.company}
+                      </span>
+                      <span aria-hidden className="text-text-muted/50">
+                        ·
+                      </span>
+                      <span>{role.title}</span>
+                      <span className="text-text-muted/70">
+                        {shortRoleDate(role.date)}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ) : null}
+          </div>
+
+          <div className="relative mt-12 w-full overflow-hidden animate-fade-up-late">
+            <p className="mb-4 text-sm uppercase tracking-section text-brand">
+              What I work with
+            </p>
+            <SkillsMarquee
+              compact
+              className="overflow-hidden mask-[linear-gradient(90deg,transparent,black_8%,black_92%,transparent)]"
+            />
           </div>
         </div>
       </section>

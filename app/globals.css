@@ -31,6 +31,8 @@
   --tracking-section: 0.2em;
   --width-toast: min(100vw - 2rem, 22rem);
   --animate-fade-up: fade-up 0.5s var(--ease-out) both;
+  --animate-fade-up-delayed: fade-up 0.55s var(--ease-out) 0.12s both;
+  --animate-fade-up-late: fade-up 0.55s var(--ease-out) 0.24s both;
 }
 
 @keyframes fade-up {

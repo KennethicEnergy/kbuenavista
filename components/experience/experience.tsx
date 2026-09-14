@@ -12,6 +12,7 @@ import { cn } from "@/lib/utils/cn";
 type ExperienceProps = {
   timeline: TimelineData[];
   activities: ActivityData[];
+  className?: string;
 };
 
 function highlightKey(highlight: ExperienceHighlight, index: number) {
@@ -48,7 +49,7 @@ function HighlightSegment({ part }: { part: HighlightPart }) {
   return part.text;
 }
 
-export function Experience({ timeline, activities }: ExperienceProps) {
+export function Experience({ timeline, activities, className }: ExperienceProps) {
   const items = [...timeline].reverse();
 
   return (
@@ -56,6 +57,7 @@ export function Experience({ timeline, activities }: ExperienceProps) {
       id="experience"
       title="Experience"
       subtitle="Roles, projects, and a few milestones along the way."
+      className={cn("relative z-10 bg-bg-base pt-16 md:pt-24", className)}
     >
       <ol className="relative space-y-8 border-l border-bg-elevated pl-6 md:pl-8">
         {items.map((item) => (

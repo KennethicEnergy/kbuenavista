@@ -180,13 +180,13 @@ Delivers proposals and guides customers through the application process without 
 	},
 	{
 		id: 6,
-		title: "Senior Front-End Web Developer",
+		title: "Senior Front-End Web Developer (Part-time)",
 		company: "BossDeal Corporation",
     companyUrl: null,
 		date: "September 2024 - December 2024",
 		description: "In this role, I am responsible for developing online gaming platforms using Next.js and Vue.js. My tasks include designing and implementing key features, ensuring seamless integration of backend APIs, and optimizing performance for a smooth user experience. I work closely with designers to translate mockups into interactive interfaces, follow best practices for maintainable and scalable code, and implement unit tests to ensure code reliability. Additionally, I collaborate with stakeholders to gather requirements, troubleshoot issues, and deploy updates, ensuring the applications meet user expectations and project deadlines.",
 		highlights: [
-			"Online gaming / iGaming — developed gaming platforms with Next.js and Vue.js",
+			"Part-time — online gaming / iGaming platforms with Next.js and Vue.js",
 			"Implemented key features, backend API integrations, and performance optimizations",
 			"Translated designer mockups into interactive interfaces with unit tests",
 			"Worked with stakeholders on requirements, troubleshooting, and deployments",
