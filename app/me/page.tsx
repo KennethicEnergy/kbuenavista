@@ -39,9 +39,18 @@ export default function AboutPage() {
         </h1>
 
         <p className="mt-5 text-lg text-text-muted">
-          Senior frontend developer based in {site.country}. I build polished product
-          interfaces with React, Next.js, and TypeScript — from design systems to
-          production platforms.
+          Frontend engineer based in {site.country} with 10 years of experience
+          building and maintaining production web applications. I focus on React,
+          Next.js, and TypeScript — from translating UI/UX into responsive interfaces
+          to shaping frontend architecture that stays clear as products scale.
+        </p>
+
+        <p className="mt-4 text-text-muted">
+          My work spans the full frontend process: reusable component systems, REST
+          API integration, debugging complex issues, and improving performance and
+          maintainability. I care about how an application feels to use, how the
+          codebase holds up as a project grows, and how frontend decisions connect
+          with design, backend, and product requirements.
         </p>
 
         <p className="mt-4 text-text-muted">
@@ -125,8 +134,9 @@ export default function AboutPage() {
 
         <p className="mt-4 text-text-muted">
           Outside of shipping features, I care about readable architecture, thoughtful
-          motion, and experiences that feel fast on every device.{" "}
-          {site.introduction}
+          motion, and experiences that feel fast on every device. I&apos;m always
+          interested in challenging products, strong teams, and web experiences that
+          are both technically solid and enjoyable to use. {site.introduction}
         </p>
       </div>
     </div>
