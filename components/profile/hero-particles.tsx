@@ -27,15 +27,19 @@ function buildParticleOptions(isCoarsePointer: boolean): ISourceOptions {
     detectRetina: !isCoarsePointer,
     particles: {
       number: {
-        value: isCoarsePointer ? 36 : 72,
-        density: { enable: true, width: 1200, height: 800 },
+        // Density scales count by canvas/area — on phones that collapses to ~10
+        // barely-visible dots. Use a fixed count on coarse pointers instead.
+        value: isCoarsePointer ? 48 : 72,
+        density: isCoarsePointer
+          ? { enable: false }
+          : { enable: true, width: 1200, height: 800 },
       },
       color: { value: ["#aaff00", "#7a90b0", "#f0f4ff"] },
       links: {
         enable: true,
         color: "#aaff00",
-        distance: isCoarsePointer ? 110 : 140,
-        opacity: 0.18,
+        distance: isCoarsePointer ? 100 : 140,
+        opacity: isCoarsePointer ? 0.28 : 0.18,
         width: 1,
       },
       move: {
@@ -45,10 +49,14 @@ function buildParticleOptions(isCoarsePointer: boolean): ISourceOptions {
         outModes: { default: "out" },
       },
       opacity: {
-        value: { min: 0.15, max: 0.55 },
+        value: isCoarsePointer
+          ? { min: 0.28, max: 0.7 }
+          : { min: 0.15, max: 0.55 },
       },
       size: {
-        value: { min: 1, max: 2.8 },
+        value: isCoarsePointer
+          ? { min: 1.2, max: 3.2 }
+          : { min: 1, max: 2.8 },
       },
     },
     interactivity: {
@@ -76,7 +84,11 @@ type HeroParticlesProps = {
 };
 
 export function HeroParticles({ className, style }: HeroParticlesProps) {
-  const [isCoarsePointer, setIsCoarsePointer] = useState(false);
+  const [isCoarsePointer, setIsCoarsePointer] = useState(() =>
+    typeof window !== "undefined"
+      ? window.matchMedia("(pointer: coarse)").matches
+      : false,
+  );
 
   useEffect(() => {
     const media = window.matchMedia("(pointer: coarse)");
