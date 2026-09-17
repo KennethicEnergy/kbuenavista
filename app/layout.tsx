@@ -55,6 +55,7 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
+  viewportFit: "cover",
   themeColor: "#0a1628",
 };
 
@@ -69,9 +70,9 @@ export default function RootLayout({
         <AuthProvider>
           <TopLoader />
           <DynamicTitle />
-          <div className="mx-auto flex min-h-screen w-full max-w-5xl flex-col px-5 md:px-8">
+          <div className="mx-auto flex min-h-dvh min-h-screen w-full max-w-5xl flex-col pl-[max(1.25rem,env(safe-area-inset-left))] pr-[max(1.25rem,env(safe-area-inset-right))] md:pl-[max(2rem,env(safe-area-inset-left))] md:pr-[max(2rem,env(safe-area-inset-right))]">
             <main className="flex-1">{children}</main>
-            <footer className="flex flex-wrap items-center justify-between gap-3 border-t border-bg-elevated py-8 text-sm text-text-muted">
+            <footer className="flex flex-wrap items-center justify-between gap-3 border-t border-bg-elevated py-8 pb-[max(2rem,env(safe-area-inset-bottom))] text-sm text-text-muted">
               <span>© {new Date().getFullYear()} Kenneth Buenavista</span>
               <Link
                 href="/privacy"

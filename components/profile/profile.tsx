@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useEffectEvent, useState } from "react";
+import dynamic from "next/dynamic";
 import Image from "next/image";
 import Link from "next/link";
 import { BiLogoGithub } from "react-icons/bi";
@@ -13,8 +14,13 @@ import { LoginModal } from "@/components/auth/login-modal";
 import { ThankYouModal } from "@/components/auth/thank-you-modal";
 import { useAuth } from "@/components/auth/auth-provider";
 import { RotatingIntroduction } from "@/components/ui/rotating-introduction";
-import { HeroParticles } from "@/components/profile/hero-particles";
 import { SkillsMarquee } from "@/components/skills/skills-marquee";
+
+const HeroParticles = dynamic(
+  () =>
+    import("@/components/profile/hero-particles").then((mod) => mod.HeroParticles),
+  { ssr: false },
+);
 import { toaster } from "@/lib/toaster";
 import { cn } from "@/lib/utils/cn";
 import {
@@ -315,19 +321,19 @@ export function Profile({ site, timeline }: ProfileProps) {
 
       <section
         aria-label="Introduction"
-        className="relative left-1/2 w-screen max-w-[100vw] -translate-x-1/2 isolate overflow-hidden"
+        className="relative isolate ml-[calc(50%-50vw)] w-screen max-w-[100vw] overflow-hidden min-h-dvh min-h-[100dvh]"
       >
-        <div className="pointer-events-none absolute inset-0 bg-bg-base" aria-hidden>
+        <div className="pointer-events-none absolute inset-0 min-h-dvh min-h-[100dvh] bg-bg-base" aria-hidden>
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,color-mix(in_srgb,var(--brand)_14%,transparent),transparent_55%),radial-gradient(ellipse_at_bottom_left,color-mix(in_srgb,var(--bg-elevated)_80%,transparent),transparent_50%)]" />
           {!reducedMotion ? (
             <HeroParticles
-              className="absolute inset-0 will-change-transform"
+              className="absolute inset-0 h-full w-full will-change-transform"
               style={{ transform: `translate3d(0, ${particlesOffset}px, 0)` }}
             />
           ) : null}
         </div>
 
-        <div className="relative mx-auto flex min-h-[100dvh] w-full max-w-5xl flex-col px-5 py-16 md:px-8 md:py-20">
+        <div className="relative mx-auto flex min-h-dvh min-h-[100dvh] w-full max-w-5xl flex-col pl-[max(1.25rem,env(safe-area-inset-left))] pr-[max(1.25rem,env(safe-area-inset-right))] pt-[max(4rem,env(safe-area-inset-top))] pb-[max(4rem,env(safe-area-inset-bottom))] md:pl-[max(2rem,env(safe-area-inset-left))] md:pr-[max(2rem,env(safe-area-inset-right))] md:pt-[max(5rem,env(safe-area-inset-top))] md:pb-[max(5rem,env(safe-area-inset-bottom))]">
           <div
             className="flex flex-1 flex-col justify-center will-change-transform"
             style={
