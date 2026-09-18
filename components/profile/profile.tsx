@@ -101,6 +101,20 @@ function usePrefersReducedMotion() {
   return reduced;
 }
 
+function useIsCoarsePointer() {
+  const [coarse, setCoarse] = useState(false);
+
+  useEffect(() => {
+    const media = window.matchMedia("(pointer: coarse)");
+    const update = () => setCoarse(media.matches);
+    update();
+    media.addEventListener("change", update);
+    return () => media.removeEventListener("change", update);
+  }, []);
+
+  return coarse;
+}
+
 function useScrollParallax(enabled: boolean) {
   const [offset, setOffset] = useState(0);
 
@@ -134,7 +148,8 @@ export function Profile({ site, timeline }: ProfileProps) {
   const [isDownloading, setIsDownloading] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const reducedMotion = usePrefersReducedMotion();
-  const scrollY = useScrollParallax(!reducedMotion);
+  const isCoarsePointer = useIsCoarsePointer();
+  const scrollY = useScrollParallax(!reducedMotion && !isCoarsePointer);
   const featuredRoles = getFeaturedRoles(timeline);
 
   const performDownload = async (token: string, displayName?: string | null) => {
@@ -321,15 +336,37 @@ export function Profile({ site, timeline }: ProfileProps) {
 
       <section
         aria-label="Introduction"
-        className="relative isolate ml-[calc(50%-50vw)] w-screen max-w-[100vw] overflow-hidden min-h-dvh min-h-[100dvh]"
+        className="relative isolate ml-[calc(50%-50vw)] w-screen max-w-[100vw] overflow-hidden min-h-[100svh] min-h-dvh"
       >
-        <div className="pointer-events-none absolute inset-0 min-h-dvh min-h-[100dvh] bg-bg-base" aria-hidden>
+        <div
+          className="pointer-events-none absolute bg-bg-base"
+          style={{
+            top: "calc(-1 * env(safe-area-inset-top, 0px))",
+            right: "calc(-1 * env(safe-area-inset-right, 0px))",
+            bottom: "calc(-1 * env(safe-area-inset-bottom, 0px))",
+            left: "calc(-1 * env(safe-area-inset-left, 0px))",
+          }}
+          aria-hidden
+        >
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,color-mix(in_srgb,var(--brand)_14%,transparent),transparent_55%),radial-gradient(ellipse_at_bottom_left,color-mix(in_srgb,var(--bg-elevated)_80%,transparent),transparent_50%)]" />
+          {/*
+            Keep the canvas in a non-transformed box on touch devices. Safari iOS
+            often paints a blank canvas when an ancestor uses transform.
+          */}
           {!reducedMotion ? (
-            <HeroParticles
-              className="absolute inset-0 h-full w-full will-change-transform"
-              style={{ transform: `translate3d(0, ${particlesOffset}px, 0)` }}
-            />
+            <div className="absolute inset-0 overflow-hidden">
+              <HeroParticles
+                className="absolute inset-0 h-full min-h-full w-full"
+                style={
+                  isCoarsePointer
+                    ? undefined
+                    : {
+                        transform: `translate3d(0, ${particlesOffset}px, 0)`,
+                        willChange: "transform",
+                      }
+                }
+              />
+            </div>
           ) : null}
         </div>
 

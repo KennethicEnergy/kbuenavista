@@ -24,7 +24,9 @@ function buildParticleOptions(isCoarsePointer: boolean): ISourceOptions {
     fullScreen: { enable: false },
     background: { color: { value: "transparent" } },
     fpsLimit: isCoarsePointer ? 30 : 60,
-    detectRetina: !isCoarsePointer,
+    // Retina canvases on iOS Safari often end up oversized / blank in nested absolute layouts.
+    detectRetina: false,
+    pauseOnBlur: false,
     particles: {
       number: {
         // Density scales count by canvas/area — on phones that collapses to ~10
@@ -84,18 +86,20 @@ type HeroParticlesProps = {
 };
 
 export function HeroParticles({ className, style }: HeroParticlesProps) {
-  const [isCoarsePointer, setIsCoarsePointer] = useState(() =>
-    typeof window !== "undefined"
-      ? window.matchMedia("(pointer: coarse)").matches
-      : false,
-  );
+  const [isCoarsePointer, setIsCoarsePointer] = useState(false);
+  const [ready, setReady] = useState(false);
 
   useEffect(() => {
     const media = window.matchMedia("(pointer: coarse)");
     const update = () => setIsCoarsePointer(media.matches);
     update();
     media.addEventListener("change", update);
-    return () => media.removeEventListener("change", update);
+    // Defer mount one frame so Safari has resolved layout/% heights.
+    const frame = window.requestAnimationFrame(() => setReady(true));
+    return () => {
+      media.removeEventListener("change", update);
+      window.cancelAnimationFrame(frame);
+    };
   }, []);
 
   const options = useMemo(
@@ -106,16 +110,20 @@ export function HeroParticles({ className, style }: HeroParticlesProps) {
   const particlesLoaded = useCallback(async (container?: Container) => {
     if (!container) return;
 
-    const root = container.canvas.domElement?.parentElement;
-    if (!root) return;
+    const canvas = container.canvas.domElement;
+    const root = canvas?.parentElement;
+    if (!root || !canvas) return;
 
     const refreshWhenSized = async () => {
       const { clientWidth, clientHeight } = root;
-      if (clientWidth > 0 && clientHeight > 0) {
-        await container.canvas.windowResize();
-        return true;
-      }
-      return false;
+      if (clientWidth <= 0 || clientHeight <= 0) return false;
+
+      canvas.style.width = "100%";
+      canvas.style.height = "100%";
+      canvas.style.display = "block";
+
+      await container.canvas.windowResize();
+      return true;
     };
 
     if (await refreshWhenSized()) return;
@@ -128,24 +136,34 @@ export function HeroParticles({ className, style }: HeroParticlesProps) {
     });
     observer.observe(root);
 
+    const onResume = () => {
+      void refreshWhenSized();
+    };
+    window.addEventListener("orientationchange", onResume);
+    document.addEventListener("visibilitychange", onResume);
+
     // Fallback in case ResizeObserver never fires a usable size.
     window.setTimeout(() => {
       void refreshWhenSized();
       observer.disconnect();
-    }, 500);
+      window.removeEventListener("orientationchange", onResume);
+      document.removeEventListener("visibilitychange", onResume);
+    }, 700);
   }, []);
 
   return (
     <div className={className} style={style} aria-hidden>
-      <ParticlesProvider init={initParticles}>
-        <Particles
-          id="hero-particles"
-          options={options}
-          particlesLoaded={particlesLoaded}
-          className="absolute inset-0 h-full w-full"
-          style={{ width: "100%", height: "100%" }}
-        />
-      </ParticlesProvider>
+      {ready ? (
+        <ParticlesProvider init={initParticles}>
+          <Particles
+            id="hero-particles"
+            options={options}
+            particlesLoaded={particlesLoaded}
+            className="absolute inset-0 !h-full !w-full"
+            style={{ width: "100%", height: "100%", display: "block" }}
+          />
+        </ParticlesProvider>
+      ) : null}
     </div>
   );
 }
