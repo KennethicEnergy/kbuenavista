@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { cn } from "@/lib/utils/cn";
 
 type RotatingIntroductionProps = {
   lines: string[];
@@ -27,9 +26,14 @@ export function RotatingIntroduction({
     return () => window.clearInterval(timer);
   }, [intervalSeconds, safeLines.length]);
 
+  // The live region must stay mounted: remounting it on every change (via `key`)
+  // makes screen readers miss the update. Only the inner span is re-keyed to
+  // replay the fade animation.
   return (
-    <p key={index} className={cn("animate-fade-up", className)}>
-      {safeLines[index] ?? safeLines[0]}
+    <p aria-live="polite" aria-atomic="true" className={className}>
+      <span key={index} className="block animate-fade-up">
+        {safeLines[index] ?? safeLines[0]}
+      </span>
     </p>
   );
 }

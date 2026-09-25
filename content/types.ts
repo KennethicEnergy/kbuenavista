@@ -59,5 +59,3 @@ export type SiteContentBase = {
 export type SiteContent = SiteContentBase & {
   aboutSlideshowImages: string[];
 };
-
-export type AlertType = "success" | "error" | "warning" | "info" | "default";
